@@ -1,0 +1,139 @@
+.drone-card-component {
+  margin-top: 20px;
+}
+
+.filter-bar {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-bar .col-6 {
+  padding: 0 10px;
+}
+
+.drone-card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  height: 100%;
+  flex: 1 1 calc(33.333% - 20px);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.drone-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dronecard-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.drone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.drone-info {
+  flex: 1;
+  text-align: left;
+}
+
+.drone-model {
+  margin: 0;
+  font-size: 1.2em;
+  color: #333;
+  font-weight: bold;
+}
+
+.drone-id {
+  margin: 0;
+  color: #777;
+}
+
+.drone-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.drone-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.status-item {
+  text-align: left;
+}
+
+.status-label {
+  font-weight: normal;
+  color: #777;
+}
+
+.status-value {
+  font-weight: bold;
+  color: #333;
+}
+
+.battery-section {
+  margin-top: 10px;
+}
+
+.battery-bar {
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.battery-level {
+  background-color: #007bff;
+  height: 10px;
+}
+
+.battery-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.battery-percentage {
+  margin: 0;
+  color: #333;
+  font-weight: bold;
+}
+
+.battery-max {
+  margin: 0;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .drone-card {
+    flex: 1 1 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .drone-card {
+    flex: 1 1 calc(50% - 20px);
+  }
+}
+
+@media (min-width: 993px) {
+  .drone-card {
+    flex: 1 1 calc(33.333% - 20px);
+  }
+}

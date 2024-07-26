@@ -1,0 +1,48 @@
+.app {
+  display: flex;
+}
+
+.sidebar {
+  z-index: 1000; /* Ensure sidebar stays on top */
+}
+
+.main-content {
+  margin-left: 80px;
+  padding: 20px;
+  width: calc(100% - 80px);
+  overflow-y: auto;
+  transition: margin-left 0.3s, width 0.3s;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 80px;
+  width: calc(100% - 80px);
+  height: 60px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  transition: left 0.3s, width 0.3s;
+  z-index: 999; /* Ensure topbar stays on top */
+}
+
+.content-wrapper {
+  margin-top: 50px;
+}
+
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+
+.sidebar-footer li {
+  padding: 10px 0;
+}
+
+.sidebar-footer li i {
+  font-size: 20px;
+}

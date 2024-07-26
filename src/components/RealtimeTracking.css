@@ -1,0 +1,112 @@
+
+/* RealtimeTracking.css */
+
+.realtime-tracking {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .map-container {
+    height: 400px;
+    margin-bottom: 20px;
+  }
+  
+  .drone-status-table {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .table-actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  .download-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .search-input {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+  }
+  
+  .filter-select {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #1a1a2e;
+    color: white;
+  }
+  
+  .status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  
+  .status.green {
+    background-color: green;
+  }
+  
+  .status.red {
+    background-color: red;
+  }
+  
+  .view-map-btn, .more-details-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: transform 0.2s;
+  }
+  
+  .view-map-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .more-details-btn {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .view-map-btn:hover, .more-details-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  .view-map-btn:active, .more-details-btn:active {
+    transform: scale(0.9);
+  }
+  
