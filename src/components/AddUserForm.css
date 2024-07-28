@@ -1,4 +1,4 @@
-.modal {
+.aumodal {
     position: fixed;
     top: 0;
     left: 0;
@@ -10,48 +10,48 @@
     align-items: center;
   }
   
-  .modal-content {
+  .aumodal-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
     width: 500px;
   }
   
-  .modal-content h2 {
+  .aumodal-content h2 {
     margin-top: 0;
   }
   
-  .modal-content label {
+  .aumodal-content label {
     display: block;
     margin-bottom: 10px;
   }
   
-  .modal-content input,
-  .modal-content select {
+  .aumodal-content input,
+  .aumodal-content select {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
     margin-bottom: 15px;
   }
   
-  .modal-actions {
+  .aumodal-actions {
     display: flex;
     justify-content: space-between;
   }
   
-  .modal-actions button {
+  .aumodal-actions button {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
   }
   
-  .modal-actions button:first-child {
+  .aumodal-actions button:first-child {
     background-color: #4caf50;
     color: white;
   }
   
-  .modal-actions button:last-child {
+  .aumodal-actions button:last-child {
     background-color: #f44336;
     color: white;
   }

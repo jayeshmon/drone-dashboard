@@ -1,31 +1,113 @@
-.user-management {
+ .user-management{
+    background-color: #f8f9fa;
+    border-radius: 10px;
     padding: 20px;
   }
   
-  .user-management table {
+  .user-management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .user-management-header h2 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .user-management-search-bar {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-management-search-bar i {
+    font-size: 20px;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  
+  .user-management-search-bar input {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  .user-management-table {
     width: 100%;
     border-collapse: collapse;
   }
   
-  .user-management th, .user-management td {
+  .user-management-table th, .drones-table td {
     padding: 10px;
-    border: 1px solid #ccc;
-  }
-  
-  .user-management th {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .user-management button {
-    padding: 5px 10px;
-    margin: 0 5px;
-    border: none;
-    border-radius: 5px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
     cursor: pointer;
   }
   
-  .user-management button:hover {
-    background-color: #ccc;
+  .user-management-table th {
+    background-color: #1a1a2e;
+    color: white;
+  }
+  
+  .user-management-table td img {
+    width: 50px;
+    height: auto;
+  }
+  
+  .user-management-status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  
+  .user-management-status.green {
+    background-color: green;
+  }
+  
+  .user-management-status.red {
+    background-color: red;
+  }
+  
+  .user-management-status.yellow {
+    background-color: yellow;
+  }
+  
+  .user-management-edit-btn, .delete-btn {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .user-management-edit-btn {
+    background-color: #4caf50;
+  }
+  
+  .user-management-delete-btn {
+    background-color: #f44336;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination i, .pagination span {
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  .pagination span {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #1a1a2e;
+    color: white;
   }
   

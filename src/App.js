@@ -1,57 +1,58 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
-import Topbar from './components/Topbar';
-import Dashboard from './components/Dashboard';
-import FleetManagement from './components/FleetManagement';
-import DroneDetails from './components/DroneDetails';
-import RealtimeTracking from './components/RealtimeTracking';
-import SuperAdminDashboard from './SuperAdminDashboard';
-import UserManagement from './UserManagement';
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { AuthProvider, AuthContext } from './context/AuthContext';
 
+import Dashboard from './components/Dashboard';
+
+import RealtimeTracking from './components/RealtimeTracking';
+import AdminDashboard from './components/AdminDashboard'; // Import AdminDashboard
+import Login from './components/Login';
 
 import './App.css';
+import UserManagement from './UserManagement';
+
+const ProtectedRoute = ({ element, roles, ...rest }) => {
+  const { authState } = React.useContext(AuthContext);
+  if (!authState.isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  if (roles && !roles.includes(authState.user.role)) {
+    return <Navigate to="/" />;
+  }
+  return element;
+};
 
 const App = () => {
-  const [users, setUsers] = useState([]);
-  const [devices, setDevices] = useState([]);
-
-  const addUser = (user) => {
-    setUsers([...users, user]);
-  };
-
-  const editUser = (updatedUser) => {
-    setUsers(users.map(user => user.email === updatedUser.email ? updatedUser : user));
-  };
-
-  const deleteUser = (userToDelete) => {
-    setUsers(users.filter(user => user.email !== userToDelete.email));
-  };
-
-  const addDevice = (device) => {
-    setDevices([...devices, device]);
-  };
-
   return (
     <Router>
-      <div className="app">
-        <Sidebar />
-        <div className="main-content">
-          <Topbar />
-          <div className="content-wrapper">
-            <Routes>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/fleet-management" element={<FleetManagement />} />
-              <Route path="/realtime-tracking" element={<RealtimeTracking />} />
-              <Route path="/drone-details/:droneId" element={<DroneDetails />} />
-              <Route path="/super-admin-dashboard" element={<SuperAdminDashboard onAddUser={addUser} onAddDevice={addDevice} />} />
-              <Route path="/user-management" element={<UserManagement users={users} onEditUser={editUser} onDeleteUser={deleteUser} />} />
-              <Route path="/" element={<Dashboard />} />
-            </Routes>
-    
-          </div>
+      <AuthProvider>
+        <div className="app">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            
+            <Route
+              path="/dashboard"
+              element={<ProtectedRoute element={<Dashboard />} />}
+            />
+            <Route
+              path="/realtime-tracking"
+              element={<ProtectedRoute element={<RealtimeTracking />} />}
+            />
+         
+            <Route
+              path="/admin"
+              element={<ProtectedRoute element={<AdminDashboard />} roles={['admin']} />}
+            />
+            
+            <Route
+              path="/admin/users"
+              element={<ProtectedRoute element={<UserManagement/>} roles={['admin']} />}
+            />
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+          </Routes>
         </div>
-      </div>
+      </AuthProvider>
     </Router>
   );
 };

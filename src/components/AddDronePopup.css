@@ -1,115 +1,57 @@
-/* Popup styles */
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .popup-content {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    width: 400px;
-    animation: fadeIn 0.3s ease-in-out;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  
-  .popup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .popup-header h2 {
-    margin: 0;
-    font-size: 1.5em;
-    color: #333;
-  }
-  
-  .btn-close {
-    background: none;
-    border: none;
-    font-size: 1.5em;
-    cursor: pointer;
-  }
-  
-  .popup-body {
-    margin-top: 20px;
-  }
-  
-  .popup-body input,
-  .popup-body select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .file-upload {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .file-upload input[type="file"] {
-    margin-top: 10px;
-  }
-  
-  .file-upload p {
-    font-size: 0.9em;
-    color: #777;
-  }
-  
-  .popup-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  .popup-footer button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.3s;
-  }
-  
-  .popup-footer .btn-add {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  .popup-footer .btn-cancel {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .popup-footer .btn-reset {
-    background-color: #777;
-    color: white;
-  }
-  
-  .popup-footer button:hover {
-    transform: scale(1.05);
-  }
-  
-  .popup-footer button:active {
-    transform: scale(0.95);
-  }
-  
+.aumodal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aumodal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 500px;
+}
+
+.aumodal-content h2 {
+  margin-top: 0;
+}
+
+.aumodal-content label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.aumodal-content input,
+.aumodal-content select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.aumodal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.aumodal-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.aumodal-actions button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.aumodal-actions button:last-child {
+  background-color: #f44336;
+  color: white;
+}
