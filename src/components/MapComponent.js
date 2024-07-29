@@ -1,7 +1,7 @@
 import React from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import './MapComponent.css';
-
+import Swal from 'sweetalert2';
 const containerStyle = {
   width: '100%',
   height: '300px'

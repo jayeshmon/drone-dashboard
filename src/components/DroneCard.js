@@ -3,7 +3,7 @@ import './DroneCard.css';
 import droneIcon1 from '../assets/drone1.png';
 import droneIcon2 from '../assets/drone2.png';
 import droneIcon3 from '../assets/drone3.png';
-
+import Swal from 'sweetalert2';
 const defaultDroneData = [
   { id: 'C294753', model: 'DJI Matrice 600', imei: '860305052252030', Status: 'Active', battery: 62, maxKm: 260, icon: droneIcon1 },
   { id: 'C293841', model: 'DJI Mavic Enterprise', imei: '860305052252025', Status: 'Active', battery: 44, maxKm: 139, icon: droneIcon2 },

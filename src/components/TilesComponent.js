@@ -6,7 +6,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import FlightIcon from '@mui/icons-material/Flight';
 import MapIcon from '@mui/icons-material/Map';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-
+import Swal from 'sweetalert2';
 const data = [
   { title: 'Total No of Drones', value: 100, icon: <DroneIcon />, color: '#4caf50' },
   { title: 'No of Active Drones', value: 80, icon: <CheckCircleIcon />, color: '#2196f3' },

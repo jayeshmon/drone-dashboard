@@ -6,7 +6,7 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PublicIcon from '@mui/icons-material/Public';
 import RoadIcon from '@mui/icons-material/Directions';
-
+import Swal from 'sweetalert2';
 import './DroneDetails.css';
 import RouteHistory from './RouteHistory';
 

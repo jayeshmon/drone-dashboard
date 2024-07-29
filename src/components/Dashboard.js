@@ -7,7 +7,7 @@ import TilesComponent from './TilesComponent';
 import './Dashboard.css';
 import './Sidebar.css';
 import './Topbar.css';
-
+import Swal from 'sweetalert2';
 const Dashboard = () => {
   return (
     <div className="dashboard container-fluid">

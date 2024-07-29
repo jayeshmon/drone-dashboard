@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useContext} from 'react';
 import Topbar from './components/Topbar';
 import AdminSidebar from './components/AdminSidebar';
 import './UserManagement.css';
 import EditUserForm from './components/EditUserForm';
-
+import Swal from 'sweetalert2';
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +28,9 @@ const UserManagement = () => {
 
         if (!response.ok) {
           throw new Error(`Failed to fetch users: ${response.statusText}`);
+         
+         Swal.fire('Failed',`Failed to fetch users: ${response.statusText}`, 'failed');
+          
         }
 
         const data = await response.json();
@@ -35,6 +38,7 @@ const UserManagement = () => {
         setLoading(false);
       } catch (err) {
         setError(err.message);
+        Swal.fire('Failed',err.message, 'failed');
         setLoading(false);
       }
     };
@@ -61,6 +65,8 @@ const UserManagement = () => {
 
       if (!response.ok) {
         throw new Error('Failed to update user');
+        Swal.fire('Error' ,'Failed to update user', 'error');
+        
       }
 
       const updatedUserData = await response.json();
@@ -68,13 +74,15 @@ const UserManagement = () => {
       setShowEditForm(false);
     } catch (error) {
       console.error('Error updating user:', error);
+      Swal.fire('Error' ,`${error}`, 'error');
     }
   };
 
   const handleDeleteClick = async (username) => {
     try {
-      const response = await fetch(`http://localhost:3003/users/${username}`, {
-        method: 'DELETE',
+    
+      const response = await fetch(`http://localhost:3003/users/delete/${username}`, {
+        method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -82,11 +90,14 @@ const UserManagement = () => {
 
       if (!response.ok) {
         throw new Error('Failed to delete user');
+        Swal.fire('Failed' ,`Failed to delete user`, 'Failed');
+        
       }
 
       setUsers(users.filter(user => user.username !== username));
     } catch (error) {
       console.error('Error deleting user:', error);
+      Swal.fire('Error' ,`Error deleting user : ${error}`, 'error');
     }
   };
 
@@ -97,7 +108,7 @@ const UserManagement = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
-
+ 
   return (
     <div className="admin-dashboard">
       <AdminSidebar />

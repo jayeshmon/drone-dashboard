@@ -2,6 +2,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const AuthContext = createContext();
 
@@ -29,11 +30,13 @@ const AuthProvider = ({ children }) => {
       const user = { username, role };
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
+      Swal.fire('Success','Welcome , You have logged in successfully', 'Success');
       setAuthState({ isAuthenticated: true, user, token });
       navigate(role === 'admin' ? '/admin' : '/dashboard');
     } catch (err) {
       console.error(err);
-      alert('Invalid credentials');
+      
+      Swal.fire('Failed','Invalid credentials', 'failed');
     }
   };
 

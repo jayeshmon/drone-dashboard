@@ -7,7 +7,7 @@ import DroneCard from './DroneCard';
 import Topbar from './Topbar';
 import './AdminDashboard.css';
 import AdminSidebar from './AdminSidebar';
-
+import Swal from 'sweetalert2';
 const AdminDashboard = ({ onAddUser, onAddDevice }) => {
   const [showAddUserForm, setShowAddUserForm] = useState(false);
   const [showAddDeviceForm, setShowAddDeviceForm] = useState(false);

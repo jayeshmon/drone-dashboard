@@ -11,6 +11,8 @@ import Login from './components/Login';
 
 import './App.css';
 import UserManagement from './UserManagement';
+import Drones from './components/Drones';
+
 
 const ProtectedRoute = ({ element, roles, ...rest }) => {
   const { authState } = React.useContext(AuthContext);
@@ -48,6 +50,10 @@ const App = () => {
             <Route
               path="/admin/users"
               element={<ProtectedRoute element={<UserManagement/>} roles={['admin']} />}
+            />
+            <Route
+              path="/admin/drones"
+              element={<ProtectedRoute element={<Drones/>} roles={['admin']} />}
             />
             <Route path="/" element={<Navigate to="/dashboard" />} />
           </Routes>

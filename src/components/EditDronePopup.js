@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import './AddDronePopup.css';
+import './EditDronePopup.css';
 import UserDropdown from './UserDropdown'; // Import the UserDropdown component
 import Swal from 'sweetalert2';
-const AddDronePopup = ({ onClose, onSave }) => {
-  const [imei, setImei] = useState('');
-  const [droneName, setDroneName] = useState('');
-  const [model, setModel] = useState('');
-  const [range, setRange] = useState('');
-  const [assignedUser, setAssignedUser] = useState(''); // New state for the selected user
+const EditDronePopup = ({ drone, onClose, onSave }) => {
+  const [imei, setImei] = useState(drone.imei);
+  const [droneName, setDroneName] = useState(drone.drone_name);
+  const [model, setModel] = useState(drone.model);
+  const [range, setRange] = useState(drone.range);
+  const [assignedUser, setAssignedUser] = useState(drone.assignedUser || ''); // New state for the selected user
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,34 +18,33 @@ const AddDronePopup = ({ onClose, onSave }) => {
       return;
     }
 
-    const newDrone = { imei, drone_name: droneName, model, range, assignedUser };
+    const updatedDrone = { imei, drone_name: droneName, model, range, assignedUser };
 
     try {
-      const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-
-      const response = await fetch('http://localhost:3003/drones', {
-        method: 'POST',
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:3003/drones/${drone._id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // Include the token in the headers
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(newDrone)
+        body: JSON.stringify(updatedDrone)
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Drone added:', data);
-        Swal.fire('Success' ,`User Added:  `, 'success');
-        onSave(newDrone);
+        Swal.fire('Updated' ,`Drone updated: `, 'Updated');
+        console.log('Drone updated:', data);
+        onSave(data);
       } else {
         const error = await response.text();
-        Swal.fire('Error' ,`Error Adding drone: ${error} `, 'Error');
-        console.error('Error adding drone:', error);
+        Swal.fire('Error' ,`Error Updating drone: ${error} `, 'Error');
+        console.error('Error updating drone:', error);
         
       }
     } catch (err) {
-      Swal.fire('Error' ,`Error Adding drone: ${err.message} `, 'Error');
-      console.error('Error adding drone:', err.message);
+      Swal.fire('Error' ,`Error Updating drone: ${err.message} `, 'Error');
+      console.error('Error updating drone:', err.message);
       
     }
 
@@ -55,7 +54,7 @@ const AddDronePopup = ({ onClose, onSave }) => {
   return (
     <div className="aumodal">
       <div className="aumodal-content">
-        <h2>Add Drone</h2>
+        <h2>Edit Drone</h2>
         <form onSubmit={handleSubmit}>
           <label>
             IMEI:
@@ -81,11 +80,11 @@ const AddDronePopup = ({ onClose, onSave }) => {
             <button type="submit">Submit</button>
             <button type="button" onClick={onClose}>Cancel</button>
             <button type="button" onClick={() => {
-              setImei('');
-              setDroneName('');
-              setModel('');
-              setRange('');
-              setAssignedUser('');
+              setImei(drone.imei);
+              setDroneName(drone.drone_name);
+              setModel(drone.model);
+              setRange(drone.range);
+              setAssignedUser(drone.assignedUser || '');
             }}>Reset</button>
           </div>
         </form>
@@ -94,4 +93,4 @@ const AddDronePopup = ({ onClose, onSave }) => {
   );
 };
 
-export default AddDronePopup;
+export default EditDronePopup;

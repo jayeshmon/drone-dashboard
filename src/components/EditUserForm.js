@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './EditUserForm.css';
-
+import Swal from 'sweetalert2';
 const EditUserForm = ({ user, onClose, onSave }) => {
   const [companyName, setCompanyName] = useState(user.companyName || '');
 

@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import './AddUserForm.css';
-
+import Swal from 'sweetalert2';
 const AddUserForm = ({ onClose, onSave }) => {
+  const [companyName, setCompanyName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [mobile, setMobile] = useState('');
   const [username, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('USER');
+  const [role, setRole] = useState('user');
   const [assignedDevice, setAssignedDevice] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newUser = { firstName, lastName, mobile, username, password, role, assignedDevice };
+    const newUser = { companyName,firstName, lastName, mobile, username, password, role, assignedDevice };
 
     try {
       const response = await fetch('http://localhost:3003/register', {
@@ -26,15 +27,19 @@ const AddUserForm = ({ onClose, onSave }) => {
       if (response.ok) {
         const data = await response.json();
         console.log('User registered:', data);
+        Swal.fire('Success' ,`User Added Successfully:  `, 'Success');
         onSave(newUser);
+       
       } else {
         const error = await response.text();
         console.error('Error registering user:', error);
-        alert('Error registering user: ' + error);
+        
+        Swal.fire('Error' ,`Error Registering User: ${error} `, 'Error');
       }
     } catch (err) {
       console.error('Error registering user:', err.message);
-      alert('Error registering user: ' + err.message);
+   
+      Swal.fire('Error' ,`Error Registering User ${err.message} `, 'Error');
     }
 
     onClose();
@@ -45,6 +50,11 @@ const AddUserForm = ({ onClose, onSave }) => {
       <div className="aumodal-content">
         <h2>Add User</h2>
         <form onSubmit={handleSubmit}>
+        <label>
+            Company Name:
+            <input type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
+          </label>
+        
           <label>
             First Name:
             <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
@@ -68,8 +78,8 @@ const AddUserForm = ({ onClose, onSave }) => {
           <label>
             Role:
             <select value={role} onChange={(e) => setRole(e.target.value)}>
-              <option value="USER">User</option>
-              <option value="SUPER_ADMIN">Super Admin</option>
+              <option value="user">User</option>
+              <option value="admin">Super Admin</option>
             </select>
           </label>
           <label>
@@ -81,11 +91,12 @@ const AddUserForm = ({ onClose, onSave }) => {
             <button type="button" onClick={onClose}>Cancel</button>
             <button type="button" onClick={() => {
               setFirstName('');
+              setCompanyName('');
               setLastName('');
               setMobile('');
               setEmail('');
               setPassword('');
-              setRole('USER');
+              setRole('user');
               setAssignedDevice('');
             }}>Reset</button>
           </div>

@@ -1,29 +1,98 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Drones.css';
 import Papa from 'papaparse';
 import AddDronePopup from './AddDronePopup';
-
+import EditDronePopup from './EditDronePopup';
+import Topbar from './Topbar';
+import AdminSidebar from './AdminSidebar';
+import Swal from 'sweetalert2';
 const Drones = () => {
-  const [showPopup, setShowPopup] = useState(false);
-  const [dronesData, setDronesData] = useState([
-    { id: 1, imei: '860305052252030', name: 'DJI Matrice 600', model: 'C294753', batteryId: 'BTRY021', soc: 62, status: 'green' },
-    { id: 2, imei: '860305052252031', name: 'DJI Mavic Enterprise', model: 'C293841', batteryId: 'BTRY022', soc: 44, status: 'green' },
-    { id: 3, imei: '860305052252032', name: 'x1', model: 'C393748', batteryId: 'BTRY023', soc: 71, status: 'red' },
-    { id: 4, imei: '860305052252033', name: 'x1', model: 'C395832', batteryId: 'BTRY024', soc: 71, status: 'green' },
-    { id: 5, imei: '860305052252034', name: 'Scan Eagle', model: 'C293843', batteryId: 'BTRY025', soc: 92, status: 'red' },
-    { id: 6, imei: '860305052252035', name: 'xFrame 20', model: 'C393848', batteryId: 'BTRY026', soc: 92, status: 'green' },
-    { id: 7, imei: '860305052252036', name: 'xFrame 50', model: 'C293586', batteryId: 'BTRY027', soc: 70, status: 'green' },
-    { id: 8, imei: '860305052252037', name: 'xFrame 50', model: 'C929572', batteryId: 'BTRY028', soc: 92, status: 'green' },
-    { id: 9, imei: '860305052252038', name: 'xFrame 10H', model: 'C672731', batteryId: 'BTRY029', soc: 92, status: 'red' },
-    { id: 10, imei: '860305052252039', name: 'DJI Phantom 4', model: 'C394857', batteryId: 'BTRY030', soc: 55, status: 'green' },
-    { id: 11, imei: '860305052252040', name: 'DJI Phantom 3', model: 'C394858', batteryId: 'BTRY031', soc: 60, status: 'green' },
-    { id: 12, imei: '860305052252041', name: 'DJI Inspire 1', model: 'C394859', batteryId: 'BTRY032', soc: 75, status: 'red' },
-    { id: 13, imei: '860305052252042', name: 'DJI Inspire 2', model: 'C394860', batteryId: 'BTRY033', soc: 85, status: 'green' },
-    { id: 14, imei: '860305052252043', name: 'DJI Matrice 200', model: 'C394861', batteryId: 'BTRY034', soc: 90, status: 'green' },
-    { id: 15, imei: '860305052252044', name: 'DJI Matrice 300', model: 'C394862', batteryId: 'BTRY035', soc: 95, status: 'green' }
-  ]);
+  const [showAddPopup, setShowAddPopup] = useState(false);
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [dronesData, setDronesData] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [filter, setFilter] = useState('');
+  const [selectedDrone, setSelectedDrone] = useState(null);
+
+  useEffect(() => {
+    fetchDrones();
+  }, []);
+
+  const fetchDrones = async () => {
+    try {
+      const response = await fetch('http://localhost:3003/drones');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch drones: ${response.statusText}`);
+        Swal.fire('Failed' ,`Failed to fetch drones: ${response.statusText}`, 'Failed');
+      }
+      const data = await response.json();
+      setDronesData(data);
+    } catch (error) {
+      console.error(error.message);
+      Swal.fire('Error' ,`Failed to fetch drones: ${error.message}`, 'Error');
+    }
+  };
+
+  const addDrone = async (drone) => {
+    try {
+      const response = await fetch('http://localhost:3003/drones', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(drone)
+      });
+      if (!response.ok) {
+        Swal.fire('Failed' ,`Failed to add drone:${response.statusText}`, 'Failed');
+        throw new Error(`Failed to add drone: ${response.statusText}`);
+
+
+      }
+      fetchDrones(); // Refresh the drones list
+    } catch (error) {
+      Swal.fire('Error' ,`Failed to add drone: ${error.message}`, 'Error');
+      console.error(error.message);
+    }
+  };
+
+  const updateDrone = async (id, updatedDrone) => {
+    try {
+      const response = await fetch(`http://localhost:3003/drones/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(updatedDrone)
+      });
+      if (!response.ok) {
+        Swal.fire('Failed' ,`Failed to update drone: ${response.statusText}`, 'Failed');
+        throw new Error(`Failed to update drone: ${response.statusText}`);
+      }
+      fetchDrones(); // Refresh the drones list
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const deleteDrone = async (imei) => {
+    try {
+      const response = await fetch(`http://localhost:3003/drones/delete/${imei}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      if (!response.ok) {
+        Swal.fire('Failed' ,`Failed to delete drone: ${response.statusText}`, 'Failed');
+        throw new Error(`Failed to delete drone: ${response.statusText}`);
+      }
+      fetchDrones(); // Refresh the drones list
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   const sortedDrones = React.useMemo(() => {
     let sortableDrones = [...dronesData];
@@ -58,8 +127,13 @@ const Drones = () => {
     setSortConfig({ key, direction });
   };
 
-  const togglePopup = () => {
-    setShowPopup(!showPopup);
+  const toggleAddPopup = () => {
+    setShowAddPopup(!showAddPopup);
+  };
+
+  const toggleEditPopup = (drone) => {
+    setSelectedDrone(drone);
+    setShowEditPopup(!showEditPopup);
   };
 
   const handleFileUpload = event => {
@@ -69,7 +143,6 @@ const Drones = () => {
         header: true,
         complete: results => {
           const newDrones = results.data.map((row, index) => ({
-            id: dronesData.length + index + 1,
             imei: row['IMEI'],
             name: row['Drone Name'],
             model: row['Model / ID'],
@@ -77,26 +150,41 @@ const Drones = () => {
             soc: row['SOC % (Charge)'],
             status: row['Status'].toLowerCase(),
           }));
-          setDronesData([...dronesData, ...newDrones]);
+          newDrones.forEach(drone => addDrone(drone));
         },
       });
     }
   };
 
+  const handleDelete = (imei) => {
+    if (imei) {
+      deleteDrone(imei);
+    } else {
+      console.error('Drone ID is undefined');
+    }
+  };
+
+  const handleEdit = (drone) => {
+    toggleEditPopup(drone);
+  };
+
   return (
+    <div className="admin-dashboard">
+    <AdminSidebar />
+    <div className="main-content">
+      <Topbar />
     <div className="drones">
       <div className="drones-header">
         <h2>Manage Drones</h2>
         <div className="search-bar">
           <i className="fas fa-download"></i>
           <input type="text" placeholder="Search" value={filter} onChange={e => setFilter(e.target.value)} />
-          <i className="fas fa-plus" onClick={togglePopup}></i>
+          <i className="fas fa-plus" onClick={toggleAddPopup}></i>
         </div>
       </div>
       <table className="drones-table">
         <thead>
           <tr>
-            <th onClick={() => requestSort('id')}>Sl No</th>
             <th onClick={() => requestSort('imei')}>IMEI</th>
             <th onClick={() => requestSort('name')}>Drone Name</th>
             <th onClick={() => requestSort('model')}>Model / ID</th>
@@ -108,35 +196,29 @@ const Drones = () => {
         </thead>
         <tbody>
           {filteredDrones.map((drone, index) => (
-            <tr key={drone.id}>
-              <td>{index + 1}</td>
+            <tr key={index}>
               <td>{drone.imei}</td>
               <td>{drone.name}</td>
               <td>{drone.model}</td>
               <td>{drone.batteryId}</td>
-              <td>{drone.soc}%</td>
-              <td><span className={`status ${drone.status}`}></span></td>
+              <td>{drone.soc}</td>
+              <td>{drone.status}</td>
               <td>
-                <button className="edit-btn">Edit</button>
-                <button className="delete-btn">Delete</button>
+                <button onClick={() => handleEdit(drone)}>Edit</button>
+                <button onClick={() => handleDelete(drone.imei)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className="pagination">
-        <i className="fas fa-chevron-left"></i>
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>4</span>
-        <span>...</span>
-        <i className="fas fa-chevron-right"></i>
-      </div>
-
-      <AddDronePopup showPopup={showPopup} togglePopup={togglePopup} handleFileUpload={handleFileUpload} />
+      <input type="file" accept=".csv" onChange={handleFileUpload} />
+      {showAddPopup && <AddDronePopup onClose={toggleAddPopup} onSave={fetchDrones} />}
+      {showEditPopup && selectedDrone && (
+        <EditDronePopup onClose={toggleEditPopup} onSave={fetchDrones} drone={selectedDrone} />
+      )}
     </div>
-  );
+    </div>
+</div>  );
 };
 
 export default Drones;

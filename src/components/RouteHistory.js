@@ -4,7 +4,7 @@ import './RouteHistory.css';
 import DeviceIcon from '@mui/icons-material/Devices';
 import IMEIIcon from '@mui/icons-material/Tag';
 import DateRangeIcon from '@mui/icons-material/DateRange';
-
+import Swal from 'sweetalert2';
 const dronesData = [
   { id: 1, imei: '860305052252030', name: 'DJI Matrice 600', model: 'C294753', status: 'Active', lat: 10.055554, lng: 76.354738 },
   { id: 2, imei: '860305052252031', name: 'DJI Mavic Enterprise', model: 'C293841', status: 'Active', lat: 10.0258421, lng: 76.3924477 },
