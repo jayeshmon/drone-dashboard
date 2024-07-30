@@ -4,58 +4,25 @@ import droneIcon1 from '../assets/drone1.png';
 import droneIcon2 from '../assets/drone2.png';
 import droneIcon3 from '../assets/drone3.png';
 import Swal from 'sweetalert2';
-const defaultDroneData = [
-  { id: 'C294753', model: 'DJI Matrice 600', imei: '860305052252030', Status: 'Active', battery: 62, maxKm: 260, icon: droneIcon1 },
-  { id: 'C293841', model: 'DJI Mavic Enterprise', imei: '860305052252025', Status: 'Active', battery: 44, maxKm: 139, icon: droneIcon2 },
-  { id: 'C393748', model: 'x1', imei: '860305052252054', Status: 'Active', battery: 71, maxKm: 210, icon: droneIcon3 },
-  { id: 'C395832', model: 'x1', imei: '860305052252055', Status: 'Inactive', battery: 71, maxKm: 240, icon: droneIcon1 },
-  { id: 'C293843', model: 'Scan Eagle', imei: '860305052252056', Status: 'Inactive', battery: 92, maxKm: 900, icon: droneIcon2 },
-  { id: 'C393848', model: 'xFrame 20', imei: '860305052252057', Status: 'Active', battery: 92, maxKm: 900, icon: droneIcon3 },
-  { id: 'C293586', model: 'xFrame 50', imei: '860305052252058', Status: 'Active', battery: 70, maxKm: 5, icon: droneIcon1 },
-  { id: 'C929572', model: 'xFrame 50', imei: '860305052252059', Status: 'Active', battery: 92, maxKm: 5, icon: droneIcon2 },
-  { id: 'C672731', model: 'xFrame 10H', imei: '860305052252050', Status: 'Inactive', battery: 92, maxKm: 5, icon: droneIcon3 }
-];
 
 const DroneCard = () => {
   const [filter, setFilter] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
-  const [droneData, setDroneData] = useState(defaultDroneData); // Initialize with default data
+  const [droneData, setDroneData] = useState([]);
 
   useEffect(() => {
-    const fetchDroneData = async () => {
+    const fetchDroneData = () => {
       try {
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user) {
-          throw new Error('User not logged in');
-        }
-        
-        const token = localStorage.getItem('token'); // Assume token is stored in localStorage
-        const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        };
-        
-        let response;
-        if (user.role === 'admin') {
-          response = await fetch('http://localhost:3003/drones', { headers });
-        } else {
-          response = await fetch(`http://localhost:3003/drones?username=${user.username}`, { headers });
-        }
-        
-        if (response.ok) {
-         
-          const data = await response.json();
-          console.log(data);
+        const storedData = localStorage.getItem('droneData');
+        if (storedData) {
+          const data = JSON.parse(storedData);
           setDroneData(data);
-
         } else {
-          const error = await response.text();
-          console.error('Error fetching drone data:', error);
-          alert('Error fetching drone data: ' + error);
+          Swal.fire('No drone data found in local storage', '', 'warning');
         }
       } catch (err) {
-        console.error('Error:', err.message);
-        alert('Error: ' + err.message);
+        console.error('Error fetching drone data:', err.message);
+        Swal.fire('Error', 'Error fetching drone data: ' + err.message, 'error');
       }
     };
 
@@ -63,9 +30,12 @@ const DroneCard = () => {
   }, []);
 
   const filteredDrones = droneData.filter(drone => {
-    return (filter === 'All' || drone.Status === filter) &&
+    const pStatus = drone.latestData?.p;
+    return (filter === 'All' ||
+            (filter === 'Active' && pStatus === 1) ||
+            (filter === 'Inactive' && (pStatus === 0 || pStatus === null || pStatus === undefined))) &&
            (drone.model.toLowerCase().includes(searchTerm.toLowerCase()) || 
-            drone.id.toLowerCase().includes(searchTerm.toLowerCase()));
+            drone.id?.toLowerCase().includes(searchTerm.toLowerCase()));
   });
 
   return (
@@ -97,7 +67,7 @@ const DroneCard = () => {
                   <h5 className="drone-model">{drone.model}</h5>
                   <p className="drone-id">{drone.id}</p>
                 </div>
-                <img src={drone.icon} alt="drone icon" className="drone-icon" />
+                <img src={drone.icon || droneIcon1} alt="drone icon" className="drone-icon" />
               </div>
               <div className="drone-status">
                 <div className="status-item">

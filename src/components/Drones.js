@@ -6,6 +6,7 @@ import EditDronePopup from './EditDronePopup';
 import Topbar from './Topbar';
 import AdminSidebar from './AdminSidebar';
 import Swal from 'sweetalert2';
+
 const Drones = () => {
   const [showAddPopup, setShowAddPopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
@@ -20,16 +21,21 @@ const Drones = () => {
 
   const fetchDrones = async () => {
     try {
-      const response = await fetch('http://localhost:3003/drones');
+      const response = await fetch('http://localhost:3003/alldronesdata');
       if (!response.ok) {
+        Swal.fire('Failed', `Failed to fetch drones: ${response.statusText}`, 'error');
         throw new Error(`Failed to fetch drones: ${response.statusText}`);
-        Swal.fire('Failed' ,`Failed to fetch drones: ${response.statusText}`, 'Failed');
       }
       const data = await response.json();
-      setDronesData(data);
+      console.log(data);
+      const formattedData = data.map(drone => ({
+        ...drone,
+        soc: drone.latestData?.MV || 'N/A' // Set 'N/A' if MV is not available
+      }));
+      setDronesData(formattedData);
     } catch (error) {
       console.error(error.message);
-      Swal.fire('Error' ,`Failed to fetch drones: ${error.message}`, 'Error');
+      Swal.fire('Error', `Failed to fetch drones: ${error.message}`, 'error');
     }
   };
 
@@ -44,15 +50,13 @@ const Drones = () => {
         body: JSON.stringify(drone)
       });
       if (!response.ok) {
-        Swal.fire('Failed' ,`Failed to add drone:${response.statusText}`, 'Failed');
+        Swal.fire('Failed', `Failed to add drone: ${response.statusText}`, 'error');
         throw new Error(`Failed to add drone: ${response.statusText}`);
-
-
       }
       fetchDrones(); // Refresh the drones list
     } catch (error) {
-      Swal.fire('Error' ,`Failed to add drone: ${error.message}`, 'Error');
       console.error(error.message);
+      Swal.fire('Error', `Failed to add drone: ${error.message}`, 'error');
     }
   };
 
@@ -67,12 +71,13 @@ const Drones = () => {
         body: JSON.stringify(updatedDrone)
       });
       if (!response.ok) {
-        Swal.fire('Failed' ,`Failed to update drone: ${response.statusText}`, 'Failed');
+        Swal.fire('Failed', `Failed to update drone: ${response.statusText}`, 'error');
         throw new Error(`Failed to update drone: ${response.statusText}`);
       }
       fetchDrones(); // Refresh the drones list
     } catch (error) {
       console.error(error.message);
+      Swal.fire('Error', `Failed to update drone: ${error.message}`, 'error');
     }
   };
 
@@ -85,12 +90,13 @@ const Drones = () => {
         }
       });
       if (!response.ok) {
-        Swal.fire('Failed' ,`Failed to delete drone: ${response.statusText}`, 'Failed');
+        Swal.fire('Failed', `Failed to delete drone: ${response.statusText}`, 'error');
         throw new Error(`Failed to delete drone: ${response.statusText}`);
       }
       fetchDrones(); // Refresh the drones list
     } catch (error) {
       console.error(error.message);
+      Swal.fire('Error', `Failed to delete drone: ${error.message}`, 'error');
     }
   };
 
@@ -114,7 +120,6 @@ const Drones = () => {
     drone.imei.includes(filter) ||
     drone.name.toLowerCase().includes(filter.toLowerCase()) ||
     drone.model.toLowerCase().includes(filter.toLowerCase()) ||
-    drone.batteryId.toLowerCase().includes(filter.toLowerCase()) ||
     drone.soc.toString().includes(filter) ||
     drone.status.toLowerCase().includes(filter.toLowerCase())
   );
@@ -146,8 +151,7 @@ const Drones = () => {
             imei: row['IMEI'],
             name: row['Drone Name'],
             model: row['Model / ID'],
-            batteryId: row['Battery ID'],
-            soc: row['SOC % (Charge)'],
+            soc: row['SOC % (Charge)'], // Assuming SOC % (Charge) from CSV
             status: row['Status'].toLowerCase(),
           }));
           newDrones.forEach(drone => addDrone(drone));
@@ -170,55 +174,61 @@ const Drones = () => {
 
   return (
     <div className="admin-dashboard">
-    <AdminSidebar />
-    <div className="main-content">
-      <Topbar />
-    <div className="drones">
-      <div className="drones-header">
-        <h2>Manage Drones</h2>
-        <div className="search-bar">
-          <i className="fas fa-download"></i>
-          <input type="text" placeholder="Search" value={filter} onChange={e => setFilter(e.target.value)} />
-          <i className="fas fa-plus" onClick={toggleAddPopup}></i>
+      <AdminSidebar />
+      <div className="main-content">
+        <Topbar />
+        <div className="drones">
+          <div className="drones-header">
+            <h2>Manage Drones</h2>
+            <div className="search-bar">
+              <i className="fas fa-download"></i>
+              <input type="text" placeholder="Search" value={filter} onChange={e => setFilter(e.target.value)} />
+              <i className="fas fa-plus" onClick={toggleAddPopup}></i>
+            </div>
+          </div>
+          <table className="drones-table">
+            <thead>
+              <tr>
+                <th onClick={() => requestSort('imei')}>IMEI</th>
+                <th onClick={() => requestSort('name')}>Drone Name</th>
+                <th onClick={() => requestSort('model')}>Model / ID</th>
+                <th onClick={() => requestSort('soc')}>SOC % (Charge)</th>
+                <th onClick={() => requestSort('status')}>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredDrones.map((drone, index) => (
+                <tr key={index}>
+                  <td>{drone.imei}</td>
+                  <td>{drone.name}</td>
+                  <td>{drone.model}</td>
+                  <td>{drone.soc}</td>
+                  <td>
+                    {drone.latestData?.p === 1 ? (
+                      <span className="status green"></span>
+                    ) : (
+                      <span className="status red"></span>
+                    )}
+                    {drone.status}
+                  </td>
+                  <td>
+                    <button onClick={() => handleEdit(drone)}>Edit</button>
+                    <button onClick={() => handleDelete(drone.imei)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <input type="file" accept=".csv" onChange={handleFileUpload} />
+          {showAddPopup && <AddDronePopup onClose={toggleAddPopup} onSave={fetchDrones} />}
+          {showEditPopup && selectedDrone && (
+            <EditDronePopup onClose={toggleEditPopup} onSave={fetchDrones} drone={selectedDrone} />
+          )}
         </div>
       </div>
-      <table className="drones-table">
-        <thead>
-          <tr>
-            <th onClick={() => requestSort('imei')}>IMEI</th>
-            <th onClick={() => requestSort('name')}>Drone Name</th>
-            <th onClick={() => requestSort('model')}>Model / ID</th>
-            <th onClick={() => requestSort('batteryId')}>Battery ID</th>
-            <th onClick={() => requestSort('soc')}>SOC % (Charge)</th>
-            <th onClick={() => requestSort('status')}>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredDrones.map((drone, index) => (
-            <tr key={index}>
-              <td>{drone.imei}</td>
-              <td>{drone.name}</td>
-              <td>{drone.model}</td>
-              <td>{drone.batteryId}</td>
-              <td>{drone.soc}</td>
-              <td>{drone.status}</td>
-              <td>
-                <button onClick={() => handleEdit(drone)}>Edit</button>
-                <button onClick={() => handleDelete(drone.imei)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <input type="file" accept=".csv" onChange={handleFileUpload} />
-      {showAddPopup && <AddDronePopup onClose={toggleAddPopup} onSave={fetchDrones} />}
-      {showEditPopup && selectedDrone && (
-        <EditDronePopup onClose={toggleEditPopup} onSave={fetchDrones} drone={selectedDrone} />
-      )}
     </div>
-    </div>
-</div>  );
+  );
 };
 
 export default Drones;
