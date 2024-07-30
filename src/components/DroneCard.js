@@ -64,8 +64,9 @@ const DroneCard = () => {
             <div className="dronecard-content">
               <div className="drone-header">
                 <div className="drone-info">
-                  <h5 className="drone-model">{drone.model}</h5>
-                  <p className="drone-id">{drone.id}</p>
+                  <h5 className="drone-model">{drone.drone_name}</h5>
+                  <p className="drone-id">{drone.model}</p>
+                 
                 </div>
                 <img src={drone.icon || droneIcon1} alt="drone icon" className="drone-icon" />
               </div>
@@ -76,7 +77,7 @@ const DroneCard = () => {
                 </div>
                 <div className="status-item">
                   <p className="status-label">Status:</p>
-                  <p className="status-value">{drone.Status}</p>
+                  <p className="status-value">{drone.latestData.p==1?"Active":"Inactive"}</p>
                 </div>
               </div>
               <div className="battery-section">
