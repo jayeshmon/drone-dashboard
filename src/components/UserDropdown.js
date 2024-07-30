@@ -41,6 +41,7 @@ const UserDropdown = ({ selectedUser, onUserChange }) => {
         onChange={handleSearchChange}
       />
       <select value={selectedUser} onChange={(e) => onUserChange(e.target.value)}>
+        <option value="0">select user</option>
         {filteredUsers.map(user => (
           <option key={user._id} value={user._id}>
             {user.companyName}
