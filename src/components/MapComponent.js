@@ -32,6 +32,9 @@ const MapComponent = () => {
         }
         const data = await response.json();
 
+        // Save the entire JSON data in local storage
+        localStorage.setItem('droneData', JSON.stringify(data));
+
         // Extract the locations data for the map
         const droneLocations = data.map(drone => ({
           lat: drone.latestData.lat,
@@ -39,7 +42,7 @@ const MapComponent = () => {
           title: drone.drone_name
         }));
 
-        // Save data in local storage
+        // Save drone locations in local storage
         localStorage.setItem('droneLocations', JSON.stringify(droneLocations));
 
         // Set locations and map center
