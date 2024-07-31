@@ -5,12 +5,12 @@ import './MapComponent.css';
 
 const containerStyle = {
   width: '100%',
-  height: '300px'
+  height: '300px',
 };
 
 const defaultCenter = {
   lat: 37.7749, // Default latitude
-  lng: -122.4194 // Default longitude
+  lng: -122.4194, // Default longitude
 };
 
 const MapComponent = () => {
@@ -26,21 +26,29 @@ const MapComponent = () => {
       try {
         let response;
         if (role === 'admin') {
-          response = await fetch('http://localhost:3003/alldronesdata'); // Replace with your API endpoint for all drones
+          response = await fetch('http://localhost:3003/alldronesdata');
         } else {
-          response = await fetch(`http://localhost:3003/dronesdata/${username}`); // Replace with your API endpoint for user-specific drones
+          response = await fetch(`http://localhost:3003/dronesdata/${username}`);
         }
         const data = await response.json();
 
         // Save the entire JSON data in local storage
         localStorage.setItem('droneData', JSON.stringify(data));
 
-        // Extract the locations data for the map
-        const droneLocations = data.map(drone => ({
-          lat: drone.latestData.lat,
-          lng: drone.latestData.lng,
-          title: drone.drone_name
-        }));
+        // Extract the locations data for the map, filtering out invalid locations
+        const droneLocations = data
+          .filter(drone => {
+            const lat = parseFloat(drone.latestData?.l);
+            const lng = parseFloat(drone.latestData?.g);
+            return !isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0;
+          })
+          .map(drone => ({
+            lat: parseFloat(drone.latestData.l),
+            lng: parseFloat(drone.latestData.g),
+            title: drone.drone_name || 'Unknown Drone',
+          }));
+
+        console.log(droneLocations);
 
         // Save drone locations in local storage
         localStorage.setItem('droneLocations', JSON.stringify(droneLocations));
@@ -48,7 +56,10 @@ const MapComponent = () => {
         // Set locations and map center
         setLocations(droneLocations);
         if (droneLocations.length > 0) {
-          setCenter({ lat: 0, lng: 10 });
+          setCenter({
+            lat: droneLocations[0].lat,
+            lng: droneLocations[0].lng,
+          });
         }
       } catch (error) {
         console.error('Error fetching drone data:', error);

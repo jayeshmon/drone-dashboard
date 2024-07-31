@@ -6,10 +6,9 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import FlightIcon from '@mui/icons-material/Flight';
 import MapIcon from '@mui/icons-material/Map';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import Swal from 'sweetalert2';
 
 // Define default values
-const defaultData = JSON.parse(localStorage.getItem('droneData')) || [];
+const getDroneDataFromLocalStorage = () => JSON.parse(localStorage.getItem('droneData')) || [];
 
 const TilesComponent = ({ onTileClick }) => {
   const [totalDrones, setTotalDrones] = useState(0);
@@ -17,16 +16,28 @@ const TilesComponent = ({ onTileClick }) => {
   const [inactiveDrones, setInactiveDrones] = useState(0);
   const [flyingDrones, setFlyingDrones] = useState(0);
 
-  useEffect(() => {
-    const total = defaultData.length;
-    const active = defaultData.filter(drone => drone.latestData.p === 1).length;
+  const updateData = () => {
+    const droneData = getDroneDataFromLocalStorage();
+    const total = droneData.length;
+    const active = droneData.filter(drone => drone.latestData?.p === 1).length;
     const inactive = total - active;
-    const flying = defaultData.filter(drone => drone.latestData.s > 0).length;
+    const flying = droneData.filter(drone => parseFloat(drone.latestData?.s) > 0).length;
 
     setTotalDrones(total);
     setActiveDrones(active);
     setInactiveDrones(inactive);
     setFlyingDrones(flying);
+  };
+
+  useEffect(() => {
+    // Initial data fetch
+    updateData();
+
+    // Set interval to update data every 10 seconds
+    const intervalId = setInterval(updateData, 10000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleClick = (type) => {
@@ -38,8 +49,8 @@ const TilesComponent = ({ onTileClick }) => {
     { title: 'No of Active Drones', value: activeDrones, icon: <CheckCircleIcon />, color: '#2196f3', type: 'active' },
     { title: 'No of Inactive Drones', value: inactiveDrones, icon: <HighlightOffIcon />, color: '#f44336', type: 'inactive' },
     { title: 'No of Drones Flying', value: flyingDrones, icon: <FlightIcon />, color: '#ff9800', type: 'flying' },
-    { title: 'Total Area Covered', value: '500 sq km', icon: <MapIcon />, color: '#9c27b0' },
-    { title: 'Total Hours', value: '2000 hrs', icon: <AccessTimeIcon />, color: '#3f51b5' },
+    { title: 'Total Area Covered', value: '0 sq km', icon: <MapIcon />, color: '#9c27b0' },
+    { title: 'Total Hours', value: '0 hrs', icon: <AccessTimeIcon />, color: '#3f51b5' },
   ];
 
   return (
