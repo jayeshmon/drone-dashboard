@@ -9,8 +9,8 @@ const containerStyle = {
 };
 
 const defaultCenter = {
-  lat: 37.7749, // Default latitude
-  lng: -122.4194, // Default longitude
+  lat: 37.7749,
+  lng: -122.4194,
 };
 
 const MapComponent = () => {
@@ -18,12 +18,12 @@ const MapComponent = () => {
   const [center, setCenter] = useState(defaultCenter);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const username = user?.username;
-    const role = user?.role;
-
     const fetchDronesData = async () => {
       try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const username = user?.username;
+        const role = user?.role;
+
         let response;
         if (role === 'admin') {
           response = await fetch('http://localhost:3003/alldronesdata');
@@ -32,10 +32,8 @@ const MapComponent = () => {
         }
         const data = await response.json();
 
-        // Save the entire JSON data in local storage
         localStorage.setItem('droneData', JSON.stringify(data));
 
-        // Extract the locations data for the map, filtering out invalid locations
         const droneLocations = data
           .filter(drone => {
             const lat = parseFloat(drone.latestData?.l);
@@ -48,13 +46,9 @@ const MapComponent = () => {
             title: drone.drone_name || 'Unknown Drone',
           }));
 
-        console.log(droneLocations);
-
-        // Save drone locations in local storage
         localStorage.setItem('droneLocations', JSON.stringify(droneLocations));
-
-        // Set locations and map center
         setLocations(droneLocations);
+
         if (droneLocations.length > 0) {
           setCenter({
             lat: droneLocations[0].lat,
@@ -63,17 +57,13 @@ const MapComponent = () => {
         }
       } catch (error) {
         console.error('Error fetching drone data:', error);
-        Swal.fire('Error', 'Failed to load drone data', 'error');
+        Swal.fire('error', 'Failed to load drone data', 'error');
       }
     };
 
-    // Fetch data initially
     fetchDronesData();
-
-    // Set interval to fetch data every 10 seconds
     const intervalId = setInterval(fetchDronesData, 10000);
 
-    // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 

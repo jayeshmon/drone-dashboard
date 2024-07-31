@@ -66,63 +66,69 @@ const RealtimeTracking = () => {
     <div className="realtime-tracking">
       {user && user.role === 'admin' ? <AdminSidebar /> : <Sidebar />}
 
-      <div className="map-container">
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: 'YOUR_GOOGLE_MAPS_API_KEY' }}
-          center={mapCenter}
-          zoom={mapZoom}
-        >
-          {dronesData.map(drone => (
-            <DroneMarker
-              key={drone.id}
-              lat={drone.latestData.l}
-              lng={drone.latestData.g}
-            />
-          ))}
-        </GoogleMapReact>
-      </div>
-      <div className="drone-status-table">
-        <div className="table-header">
-          <div className="table-actions">
-            <button className="download-btn"><i className="fas fa-download"></i></button>
-            <input type="text" placeholder="Search" className="search-input" />
-            <select className="filter-select">
-              <option value="All">All</option>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-          </div>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Sl No</th>
-              <th>IMEI</th>
-              <th>Drone Name</th>
-              <th>Model / ID</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {dronesData.map((drone, index) => (
-              <tr key={drone.id}>
-                <td>{index + 1}</td>
-                <td>{drone.imei}</td>
-                <td>{drone.drone_name}</td>
-                <td>{drone.model}</td>
-                <td><span className={`status ${drone.latestData.p === 1 ? 'green' : 'red'}`}></span> {drone.latestData.p}</td>
-                <td>
-                  <button className="view-map-btn" onClick={() => viewMap(drone)}>View Map</button>
-                  <Link to={`/drone-details/${drone.imei}`}>
-                    <i className="fas fa-th-large"></i>
-                    <span className="tooltip">Details</span>
-                  </Link>
-                </td>
-              </tr>
+      <div className="main-content">
+        <div className="map-container">
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: 'AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk' }}
+            center={mapCenter}
+            zoom={mapZoom}
+          >
+            {dronesData.map(drone => (
+              <DroneMarker
+                key={drone.id}
+                lat={drone.latestData.l}
+                lng={drone.latestData.g}
+              />
             ))}
-          </tbody>
-        </table>
+          </GoogleMapReact>
+        </div>
+        <div className="drone-status-table">
+          <div className="table-header">
+            <div className="table-actions">
+              <button className="download-btn"><i className="fas fa-download"></i></button>
+              <input type="text" placeholder="Search" className="search-input" />
+              <select className="filter-select">
+                <option value="All">All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Sl No</th>
+                <th>IMEI</th>
+                <th>Drone Name</th>
+                <th>Model / ID</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dronesData.map((drone, index) => (
+                <tr key={drone.id}>
+                  <td>{index + 1}</td>
+                  <td>{drone.imei}</td>
+                  <td>{drone.drone_name}</td>
+                  <td>{drone.model}</td>
+                  <td>
+                    <span className={`status ${drone.latestData.p === 1 ? 'active' : 'inactive'}`}>
+                      {drone.latestData.p === 1 ? 'Active' : 'Inactive'}
+                    </span>
+                  </td>
+                  <td>
+                    <button className="view-map-btn" onClick={() => viewMap(drone)}>View Map</button>
+                    <Link to={`/drone-details/${drone.imei}`} className="details-btn">
+                      <i className="fas fa-th-large"></i>
+                      <span className="tooltip">Details</span>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -82,10 +82,7 @@ const AddUserForm = ({ onClose, onSave }) => {
               <option value="admin">Super Admin</option>
             </select>
           </label>
-          <label>
-            Assign Device:
-            <input type="text" value={assignedDevice} onChange={(e) => setAssignedDevice(e.target.value)} />
-          </label>
+          
           <div className="aumodal-actions">
             <button type="submit">Submit</button>
             <button type="button" onClick={onClose}>Cancel</button>
