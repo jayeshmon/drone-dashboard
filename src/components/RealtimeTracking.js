@@ -46,13 +46,11 @@ const RealtimeTracking = () => {
   const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
-    // Determine the API endpoint based on user role
     const endpoint =
       user && user.role === 'admin'
         ? 'http://localhost:3003/alldronesdata'
         : `http://localhost:3003/dronesdata/${user.username}`;
 
-    // Fetch drone data from the API
     fetch(endpoint)
       .then(response => response.json())
       .then(data => setDronesData(data))
@@ -64,13 +62,8 @@ const RealtimeTracking = () => {
     setMapZoom(18);
   };
 
-  const handleMoreDetails = (droneId) => {
-    navigate(`/drone-details/${droneId}`);
-  };
-
   return (
     <div className="realtime-tracking">
-      {/* Sidebar based on user role */}
       {user && user.role === 'admin' ? <AdminSidebar /> : <Sidebar />}
 
       <div className="map-container">
@@ -121,10 +114,10 @@ const RealtimeTracking = () => {
                 <td><span className={`status ${drone.latestData.p === 1 ? 'green' : 'red'}`}></span> {drone.latestData.p}</td>
                 <td>
                   <button className="view-map-btn" onClick={() => viewMap(drone)}>View Map</button>
-                  <Link to="/drone-details">
-              <i className="fas fa-th-large"></i>
-              <span className="tooltip">Dashboard</span>
-            </Link>
+                  <Link to={`/drone-details/${drone.imei}`}>
+                    <i className="fas fa-th-large"></i>
+                    <span className="tooltip">Details</span>
+                  </Link>
                 </td>
               </tr>
             ))}
