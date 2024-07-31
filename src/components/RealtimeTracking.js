@@ -1,24 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import GoogleMapReact from 'google-map-react';
-import './RealtimeTracking.css';
 import lottie from 'lottie-web';
-import droneAnimation from '../assets/Animation - 1720863701059.json';
 import Sidebar from './Sidebar';
+import AdminSidebar from './AdminSidebar';
+import './RealtimeTracking.css';
+import droneAnimation from '../assets/Animation - 1720863701059.json';
 
-const dronesData = [
-    { id: 1, imei: '860305052252030', name: 'DJI Matrice 600', model: 'C294753', status: 'Active', lat: 10.055554, lng: 76.354738 },
-    { id: 2, imei: '860305052252031', name: 'DJI Mavic Enterprise', model: 'C293841', status: 'Active', lat: 10.0258421, lng: 76.3924477 },
-    { id: 3, imei: '860305052252032', name: 'x1', model: 'C393748', status: 'Inactive', lat: 9.989359, lng: 76.356552 },
-    { id: 4, imei: '860305052252033', name: 'x1', model: 'C395832', status: 'Active', lat: 9.974817, lng: 76.282960 },
-    { id: 5, imei: '860305052252034', name: 'Scan Eagle', model: 'C293843', status: 'Inactive', lat: 9.988491, lng: 76.579269 },
-    { id: 6, imei: '860305052252035', name: 'xFrame 20', model: 'C393848', status: 'Active', lat: 10.044599, lng: 76.3645901 },
-    { id: 7, imei: '860305052252036', name: 'xFrame 50', model: 'C293586', status: 'Active', lat: 10.0954962, lng: 77.0465818 },
-    { id: 8, imei: '860305052252037', name: 'xFrame 50', model: 'C929572', status: 'Active', lat: 9.745635, lng: 77.121254 },
-    { id: 9, imei: '860305052252038', name: 'xFrame 10H', model: 'C672731', status: 'Inactive', lat: 9.135797, lng: 76.839856 }
-  ];
-  
-<Sidebar/>
 const DroneMarker = ({ lat, lng }) => {
   const containerRef = useRef(null);
 
@@ -52,30 +41,49 @@ const DroneMarker = ({ lat, lng }) => {
 const RealtimeTracking = () => {
   const [mapCenter, setMapCenter] = useState({ lat: 10.055554, lng: 76.354738 });
   const [mapZoom, setMapZoom] = useState(14);
+  const [dronesData, setDronesData] = useState([]);
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  useEffect(() => {
+    // Determine the API endpoint based on user role
+    const endpoint =
+      user && user.role === 'admin'
+        ? 'http://localhost:3003/alldronesdata'
+        : `http://localhost:3003/dronesdata/${user.username}`;
+
+    // Fetch drone data from the API
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(data => setDronesData(data))
+      .catch(error => console.error('Error fetching drone data:', error));
+  }, [user]);
 
   const viewMap = (drone) => {
-    setMapCenter({ lat: drone.lat, lng: drone.lng });
+    setMapCenter({ lat: drone.latestData.l, lng: drone.latestData.g });
     setMapZoom(18);
   };
 
-  const openDetailsPage = (droneId) => {
+  const handleMoreDetails = (droneId) => {
     navigate(`/drone-details/${droneId}`);
   };
 
   return (
     <div className="realtime-tracking">
+      {/* Sidebar based on user role */}
+      {user && user.role === 'admin' ? <AdminSidebar /> : <Sidebar />}
+
       <div className="map-container">
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk' }}
+          bootstrapURLKeys={{ key: 'YOUR_GOOGLE_MAPS_API_KEY' }}
           center={mapCenter}
           zoom={mapZoom}
         >
           {dronesData.map(drone => (
             <DroneMarker
               key={drone.id}
-              lat={drone.lat}
-              lng={drone.lng}
+              lat={drone.latestData.l}
+              lng={drone.latestData.g}
             />
           ))}
         </GoogleMapReact>
@@ -108,12 +116,15 @@ const RealtimeTracking = () => {
               <tr key={drone.id}>
                 <td>{index + 1}</td>
                 <td>{drone.imei}</td>
-                <td>{drone.name}</td>
+                <td>{drone.drone_name}</td>
                 <td>{drone.model}</td>
-                <td><span className={`status ${drone.status === 'Active' ? 'green' : 'red'}`}></span> {drone.status}</td>
+                <td><span className={`status ${drone.latestData.p === 1 ? 'green' : 'red'}`}></span> {drone.latestData.p}</td>
                 <td>
                   <button className="view-map-btn" onClick={() => viewMap(drone)}>View Map</button>
-                  <button className="more-details-btn" onClick={() => openDetailsPage(drone.id)}>More Details</button>
+                  <Link to="/drone-details">
+              <i className="fas fa-th-large"></i>
+              <span className="tooltip">Dashboard</span>
+            </Link>
                 </td>
               </tr>
             ))}

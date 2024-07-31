@@ -9,6 +9,7 @@ import RoadIcon from '@mui/icons-material/Directions';
 import Swal from 'sweetalert2';
 import './DroneDetails.css';
 import RouteHistory from './RouteHistory';
+import Sidebar from './Sidebar';
 
 const dronesData = [
   { id: 1, imei: '860305052252030', name: 'DJI Matrice 600', model: 'C294753', status: 'Active', lat: 10.055554, lng: 76.354738 },
@@ -25,14 +26,16 @@ const dronesData = [
 const DroneDetails = () => {
   const { droneId } = useParams();
   const navigate = useNavigate();
-  const drone = dronesData.find(d => d.id === parseInt(droneId));
+  const drone = dronesData.find(d => d.id === 1);
 
   if (!drone) {
-    return <div>Drone not found</div>;
+   // return <div>Drone not found</div>;
   }
 
   return (
+    
     <div className="drone-details">
+      <Sidebar/>
       <div className="details-header">
         <button className="back-button" onClick={() => navigate(-1)}>&larr; Back</button>
         <h2>{drone.name} / {drone.model}</h2>

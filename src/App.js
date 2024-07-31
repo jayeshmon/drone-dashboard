@@ -5,7 +5,7 @@ import { AuthProvider, AuthContext } from './context/AuthContext';
 
 
 import Dashboard from './components/Dashboard';
-
+import DroneDetails from './components/DroneDetails';
 import RealtimeTracking from './components/RealtimeTracking';
 
 import AdminDashboard from './components/AdminDashboard'; // Import AdminDashboard
@@ -65,7 +65,10 @@ const App = () => {
               path="/RealtimeTracking"
               element={<ProtectedRoute element={<RealtimeTracking/>} roles={['admin']} />}
             />
+            <Route path="/drone-details/*" element={<DroneDetails />} />
+
             <Route path="/" element={<Navigate to="/dashboard" />} />
+            
           </Routes>
         </div>
       </AuthProvider>

@@ -1,4 +1,4 @@
-.sidebar {
+.adminsidebar {
     position: fixed;
     top: 0;
     left: 0;
@@ -13,21 +13,21 @@
     overflow-y: auto;
   }
   
-  .sidebar-content,
-  .sidebar-footer {
+  .adminsidebar-content,
+  .adminsidebar-footer {
     display: flex;
     flex-direction: column;
   }
   
-  .sidebar-content ul,
-  .sidebar-footer ul {
+  .adminsidebar-content ul,
+  .adminsidebar-footer ul {
     list-style: none;
     padding: 0;
     margin: 0;
   }
   
-  .sidebar-content li,
-  .sidebar-footer li {
+  .adminsidebar-content li,
+  .adminsidebar-footer li {
     width: 100%;
     text-align: center;
     padding: 15px 0;
@@ -36,25 +36,25 @@
     transition: background 0.3s, color 0.3s;
   }
   
-  .sidebar-content li:hover,
-  .sidebar-footer li:hover {
+  .adminsidebar-content li:hover,
+  .adminsidebar-footer li:hover {
     background-color: #000000;
     color: #ffffff;
   }
   
-  .sidebar-content li i,
-  .sidebar-footer li i {
+  .adminsidebar-content li i,
+  .adminsidebar-footer li i {
     font-size: 24px;
     transition: transform 0.3s;
     color: #ffffff;
   }
   
-  .sidebar-content li:hover i,
-  .sidebar-footer li:hover i {
+  .adminsidebar-content li:hover i,
+  .adminsidebar-footer li:hover i {
     transform: scale(1.2);
   }
   
-  .tooltip {
+  .admintooltip {
     display: none;
     position: absolute;
     left: 80px;
@@ -67,8 +67,8 @@
     white-space: nowrap;
   }
   
-  .sidebar-content li:hover .tooltip,
-  .sidebar-footer li:hover .tooltip {
+  .adminsidebar-content li:hover .tooltip,
+  .adminsidebar-footer li:hover .tooltip {
     display: inline-block;
   }
   

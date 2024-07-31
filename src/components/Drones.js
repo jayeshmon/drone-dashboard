@@ -5,6 +5,7 @@ import AddDronePopup from './AddDronePopup';
 import EditDronePopup from './EditDronePopup';
 import Topbar from './Topbar';
 import AdminSidebar from './AdminSidebar';
+import Sidebar from './Sidebar';
 import Swal from 'sweetalert2';
 
 const Drones = () => {
@@ -18,10 +19,17 @@ const Drones = () => {
   useEffect(() => {
     fetchDrones();
   }, []);
-
+  const user = JSON.parse(localStorage.getItem('user'));
   const fetchDrones = async () => {
     try {
-      const response = await fetch('http://localhost:3003/alldronesdata');
+       //dronesdata/:username
+       let response ="";
+       if(user.role=="admin"){
+       response = await fetch('http://localhost:3003/alldronesdata');
+    }else{
+      response = await fetch(`http://localhost:3003/dronesdata/${user.username}`);
+
+    }
       if (!response.ok) {
         Swal.fire('Failed', `Failed to fetch drones: ${response.statusText}`, 'error');
         throw new Error(`Failed to fetch drones: ${response.statusText}`);
@@ -41,6 +49,7 @@ const Drones = () => {
 
   const addDrone = async (drone) => {
     try {
+     
       const response = await fetch('http://localhost:3003/drones', {
         method: 'POST',
         headers: {
@@ -174,7 +183,7 @@ const Drones = () => {
 
   return (
     <div className="drone-admin-dashboard">
-      <AdminSidebar />
+      {user && user.role === 'admin' ? <AdminSidebar /> : <Sidebar />}
       <div className="drone-main-content">
         <Topbar />
         <div className="drone-drones">
@@ -194,7 +203,8 @@ const Drones = () => {
                 <th onClick={() => requestSort('model')}>Model / ID</th>
                 <th onClick={() => requestSort('soc')}>SOC % (Charge)</th>
                 <th onClick={() => requestSort('status')}>Status</th>
-                <th>Actions</th>
+                {user && user.role === 'admin' ? (
+                <th>Actions</th>):("")}
               </tr>
             </thead>
             <tbody>
@@ -212,10 +222,14 @@ const Drones = () => {
                     )}
                     {drone.status}
                   </td>
+                  {user && user.role === 'admin' ? (
                   <td>
+                    
                     <button className="drone-edit-btn" onClick={() => handleEdit(drone)}>Edit</button>
                     <button className="drone-delete-btn" onClick={() => handleDelete(drone.imei)}>Delete</button>
+                   
                   </td>
+                   ): ("") }
                 </tr>
               ))}
             </tbody>

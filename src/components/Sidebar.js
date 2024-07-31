@@ -25,18 +25,6 @@ const Sidebar = () => {
               <span className="tooltip">Realtime Tracking</span>
             </Link>
           </li>
-          <li>
-            <Link to="/super-admin-dashboard">
-              <i className="fas fa-user-shield"></i>
-              <span className="tooltip">Super Admin</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/user-management">
-              <i className="fas fa-users"></i>
-              <span className="tooltip">User Management</span>
-            </Link>
-          </li>
         </ul>
       </div>
       <div className="sidebar-footer">
