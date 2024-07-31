@@ -173,20 +173,20 @@ const Drones = () => {
   };
 
   return (
-    <div className="admin-dashboard">
+    <div className="drone-admin-dashboard">
       <AdminSidebar />
-      <div className="main-content">
+      <div className="drone-main-content">
         <Topbar />
-        <div className="drones">
-          <div className="drones-header">
+        <div className="drone-drones">
+          <div className="drone-drones-header">
             <h2>Manage Drones</h2>
-            <div className="search-bar">
+            <div className="drone-search-bar">
               <i className="fas fa-download"></i>
               <input type="text" placeholder="Search" value={filter} onChange={e => setFilter(e.target.value)} />
               <i className="fas fa-plus" onClick={toggleAddPopup}></i>
             </div>
           </div>
-          <table className="drones-table">
+          <table className="drone-drones-table">
             <thead>
               <tr>
                 <th onClick={() => requestSort('imei')}>IMEI</th>
@@ -206,15 +206,15 @@ const Drones = () => {
                   <td>{drone.soc}</td>
                   <td>
                     {drone.latestData?.p === 1 ? (
-                      <span className="status green"></span>
+                      <span className="drone-status drone-green"></span>
                     ) : (
-                      <span className="status red"></span>
+                      <span className="drone-status drone-red"></span>
                     )}
                     {drone.status}
                   </td>
                   <td>
-                    <button onClick={() => handleEdit(drone)}>Edit</button>
-                    <button onClick={() => handleDelete(drone.imei)}>Delete</button>
+                    <button className="drone-edit-btn" onClick={() => handleEdit(drone)}>Edit</button>
+                    <button className="drone-delete-btn" onClick={() => handleDelete(drone.imei)}>Delete</button>
                   </td>
                 </tr>
               ))}

@@ -3,15 +3,18 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
+
 import Dashboard from './components/Dashboard';
 
 import RealtimeTracking from './components/RealtimeTracking';
+
 import AdminDashboard from './components/AdminDashboard'; // Import AdminDashboard
 import Login from './components/Login';
 
 import './App.css';
 import UserManagement from './UserManagement';
 import Drones from './components/Drones';
+import FleetManagement from './components/FleetManagement';
 
 
 const ProtectedRoute = ({ element, roles, ...rest }) => {
@@ -41,7 +44,10 @@ const App = () => {
               path="/realtime-tracking"
               element={<ProtectedRoute element={<RealtimeTracking />} />}
             />
-         
+          <Route
+              path="/fleet-management"
+              element={<ProtectedRoute element={<FleetManagement/>} />}
+            />
             <Route
               path="/admin"
               element={<ProtectedRoute element={<AdminDashboard />} roles={['admin']} />}
@@ -54,6 +60,10 @@ const App = () => {
             <Route
               path="/admin/drones"
               element={<ProtectedRoute element={<Drones/>} roles={['admin']} />}
+            />
+            <Route
+              path="/RealtimeTracking"
+              element={<ProtectedRoute element={<RealtimeTracking/>} roles={['admin']} />}
             />
             <Route path="/" element={<Navigate to="/dashboard" />} />
           </Routes>

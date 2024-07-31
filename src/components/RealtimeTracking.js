@@ -4,7 +4,8 @@ import GoogleMapReact from 'google-map-react';
 import './RealtimeTracking.css';
 import lottie from 'lottie-web';
 import droneAnimation from '../assets/Animation - 1720863701059.json';
-import Swal from 'sweetalert2';
+import Sidebar from './Sidebar';
+
 const dronesData = [
     { id: 1, imei: '860305052252030', name: 'DJI Matrice 600', model: 'C294753', status: 'Active', lat: 10.055554, lng: 76.354738 },
     { id: 2, imei: '860305052252031', name: 'DJI Mavic Enterprise', model: 'C293841', status: 'Active', lat: 10.0258421, lng: 76.3924477 },
@@ -17,7 +18,7 @@ const dronesData = [
     { id: 9, imei: '860305052252038', name: 'xFrame 10H', model: 'C672731', status: 'Inactive', lat: 9.135797, lng: 76.839856 }
   ];
   
-
+<Sidebar/>
 const DroneMarker = ({ lat, lng }) => {
   const containerRef = useRef(null);
 

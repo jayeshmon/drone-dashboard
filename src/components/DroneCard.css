@@ -1,4 +1,4 @@
-.drone-card-component {
+.flight-card-component {
   margin-top: 20px;
 }
 
@@ -12,7 +12,7 @@
   padding: 0 10px;
 }
 
-.drone-card {
+.flight-card {
   background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
@@ -26,48 +26,48 @@
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.drone-card:hover {
+.flight-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.dronecard-content {
+.flightcard-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.drone-header {
+.flight-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 10px;
 }
 
-.drone-info {
+.flight-info {
   flex: 1;
   text-align: left;
 }
 
-.drone-model {
+.flight-model {
   margin: 0;
   font-size: 1.2em;
   color: #333;
   font-weight: bold;
 }
 
-.drone-id {
+.flight-id {
   margin: 0;
   color: #777;
 }
 
-.drone-icon {
+.flight-icon {
   width: 50px;
   height: 50px;
   object-fit: cover;
 }
 
-.drone-status {
+.flight-status {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -121,19 +121,19 @@
 }
 
 @media (max-width: 768px) {
-  .drone-card {
+  .flight-card {
     flex: 1 1 100%;
   }
 }
 
 @media (min-width: 769px) and (max-width: 992px) {
-  .drone-card {
+  .flight-card {
     flex: 1 1 calc(50% - 20px);
   }
 }
 
 @media (min-width: 993px) {
-  .drone-card {
+  .flight-card {
     flex: 1 1 calc(33.333% - 20px);
   }
 }

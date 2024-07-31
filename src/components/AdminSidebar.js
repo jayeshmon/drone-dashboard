@@ -1,7 +1,7 @@
 // src/components/AdminSidebar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Sidebar.css';
+import './AdminSidebar.css';
 
 const AdminSidebar = () => {
   return (
@@ -9,8 +9,14 @@ const AdminSidebar = () => {
       <div className="sidebar-content">
         <ul>
           <li>
-            <Link to="/admin/dashboard">
-              <i className="fas fa-drone"></i>
+            <Link to="/admin">
+              <i className="fas fa-th-large"></i>
+              <span className="tooltip">Drones</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/admin/drones">
+              <i className="fas fa-users-cog"></i>
               <span className="tooltip">Drones</span>
             </Link>
           </li>
@@ -21,15 +27,9 @@ const AdminSidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/admin/drones">
-              <i className="fas fa-users"></i>
-              <span className="tooltip">Users</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/admin/settings">
-              <i className="fas fa-cog"></i>
-              <span className="tooltip">Settings</span>
+            <Link to="/RealtimeTracking">
+              <i className="fas fa-map-marker-alt"></i>
+              <span className="tooltip">Realtime Tracking</span>
             </Link>
           </li>
           <li>

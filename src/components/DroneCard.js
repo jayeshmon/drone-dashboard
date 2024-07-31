@@ -39,7 +39,7 @@ const DroneCard = () => {
   });
 
   return (
-    <div className="drone-card-component container-fluid">
+    <div className="flight-card-component container-fluid">
       <div className="filter-bar row">
         <div className="col-6">
           <select className="form-select" value={filter} onChange={e => setFilter(e.target.value)}>
@@ -58,19 +58,19 @@ const DroneCard = () => {
           />
         </div>
       </div>
-      <div className="dronecard row">
+      <div className="flightcard row">
         {filteredDrones.map((drone, index) => (
-          <div key={index} className="drone-card col-12 col-md-6 col-lg-4">
-            <div className="dronecard-content">
-              <div className="drone-header">
-                <div className="drone-info">
-                  <h5 className="drone-model">{drone.drone_name}</h5>
-                  <p className="drone-id">{drone.model}</p>
+          <div key={index} className="flight-card col-12 col-md-6 col-lg-4">
+            <div className="flightcard-content">
+              <div className="flight-header">
+                <div className="flight-info">
+                  <h5 className="flight-model">{drone.drone_name}</h5>
+                  <p className="flight-id">{drone.model}</p>
                  
                 </div>
-                <img src={drone.icon || droneIcon1} alt="drone icon" className="drone-icon" />
+                <img src={drone.icon || droneIcon1} alt="drone icon" className="flight-icon" />
               </div>
-              <div className="drone-status">
+              <div className="flight-status">
                 <div className="status-item">
                   <p className="status-label">imei:</p>
                   <p className="status-value">{drone.imei}</p>
@@ -83,10 +83,10 @@ const DroneCard = () => {
               <div className="battery-section">
                 <p>Battery</p>
                 <div className="battery-bar">
-                  <div className="battery-level" style={{ width: `${drone.battery}%` }}></div>
+                  <div className="battery-level" style={{ width: `${drone.latestData.MV}%` }}></div>
                 </div>
                 <div className="battery-info">
-                  <p className="battery-percentage">{drone.battery}%</p>
+                  <p className="battery-percentage">{drone.latestData.MV}%</p>
                   <p className="battery-max">Max: {drone.maxKm} miles</p>
                 </div>
               </div>
