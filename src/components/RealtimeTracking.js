@@ -58,8 +58,10 @@ const RealtimeTracking = () => {
   }, [user]);
 
   const viewMap = (drone) => {
-    setMapCenter({ lat: drone.latestData.l, lng: drone.latestData.g });
-    setMapZoom(18);
+    // Ensure that the coordinates are properly extracted
+    const { l: lat, g: lng } = drone.latestData;
+    setMapCenter({ lat, lng });
+    setMapZoom(18); // Adjust zoom level as needed
   };
 
   return (
@@ -119,9 +121,8 @@ const RealtimeTracking = () => {
                   </td>
                   <td>
                     <button className="view-map-btn" onClick={() => viewMap(drone)}>View Map</button>
-                    <Link to={`/drone-details/${drone.imei}`} className="details-btn">
-                      <i className="fas fa-th-large"></i>
-                      <span className="tooltip">Details</span>
+                    <Link to={`/drone-details/${drone.imei}`} className="detailed-view-btn">
+                      Detailed View
                     </Link>
                   </td>
                 </tr>

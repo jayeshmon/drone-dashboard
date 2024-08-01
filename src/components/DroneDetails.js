@@ -7,52 +7,86 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PublicIcon from '@mui/icons-material/Public';
 import RoadIcon from '@mui/icons-material/Directions';
 import Sidebar from './Sidebar';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import './DroneDetails.css';
 
 const DroneDetails = () => {
-  const { droneId } = useParams(); // Retrieve droneId from URL
- 
-
+  const { droneId } = useParams();
   const navigate = useNavigate();
-  const [drone, setDrone] = useState(null); // Initialize with null
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [drone, setDrone] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [form, setForm] = useState({
+    imei: '',
+    deviceName: '',
+    fromDate: '',
+    toDate: ''
+  });
+  const [mapData, setMapData] = useState([]);
+  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
 
   useEffect(() => {
-    let fullURLArr = window.location.href.split('/');
-    let imei =fullURLArr[fullURLArr.length-1];
-   
-alert(imei);
+    const imei = window.location.href.split('/').pop();
+
     fetch(`http://localhost:3003/dronedata/${imei}`)
       .then(response => {
-      
         if (!response.ok) {
-          //throw new Error('Network response was not ok');
+          throw new Error('Network response was not ok');
         }
         return response.json();
       })
       .then(data => {
-      console.log(data);
         setDrone(data);
+        setForm(prevForm => ({ ...prevForm, imei: data.imei, deviceName: data.drone_name }));
+        setMapCenter({
+          lat: data.latestData.l,
+          lng: data.latestData.g
+        });
         setLoading(false);
       })
       .catch(error => {
-        console.error('Error fetching drone details:', error);
         setError(error.message);
         setLoading(false);
       });
   }, [droneId]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prevForm => ({ ...prevForm, [name]: value }));
+  };
+
+  const handleReset = () => {
+    setForm({
+      imei: drone ? drone.imei : '',
+      deviceName: drone ? drone.drone_name : '',
+      fromDate: '',
+      toDate: ''
+    });
+    setMapData([]);
+    setMapCenter({ lat: drone ? drone.latestData.l : 0, lng: drone ? drone.latestData.g : 0 });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form Submitted:', form);
+    // Fetch route history based on the form data and update mapData
+    // Example: fetch(`http://localhost:3003/routehistory?imei=${form.imei}&from=${form.fromDate}&to=${form.toDate}`)
+    // .then(response => response.json())
+    // .then(data => {
+    //   setMapData(data.routes);
+    // });
+  };
+
   if (loading) {
-    return <div>Loading...</div>; // Placeholder while data is being fetched
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>; // Display error message if any
+    return <div>Error: {error}</div>;
   }
 
   if (!drone) {
-    return <div>Drone not found</div>; // Display if no drone data is available
+    return <div>Drone not found</div>;
   }
 
   return (
@@ -65,8 +99,7 @@ alert(imei);
       <div className="details-body">
         <div className="card flight-mode">
           <FlightIcon className="card-icon" />
-          <h3>{drone.latestData.p==1?"Manual" : "AB Mode"}</h3>
-          <p></p>
+          <h3>{drone.latestData.p === 1 ? "Manual" : "AB Mode"}</h3>
         </div>
         <div className="card battery-status">
           <BatteryFullIcon className="card-icon" />
@@ -76,12 +109,12 @@ alert(imei);
         <div className="card altitude-speed">
           <SpeedIcon className="card-icon" />
           <h3>Altitude</h3>
-          <p> <span>{drone.latestData.ALT}</span></p>
+          <p>{drone.latestData.ALT}</p>
         </div>
         <div className="card speed">
           <SpeedIcon className="card-icon" />
           <h3>Speed</h3>
-          <p> <span>{drone.latestData.s}</span></p>
+          <p>{drone.latestData.s}</p>
         </div>
         <div className="card location">
           <LocationOnIcon className="card-icon" />
@@ -97,6 +130,76 @@ alert(imei);
           <PublicIcon className="card-icon" />
           <h3>Total Area Covered</h3>
           <p>{/* Date & Time Filter */}</p>
+        </div>
+      </div>
+
+      {/* Route History Section */}
+      <div className="route-history mt-4">
+        <h3>Route History</h3>
+        <form onSubmit={handleSubmit} className="route-history-form">
+          <div className="input-group">
+            <div className="form-group">
+              <label htmlFor="imei">IMEI</label>
+              <input
+                type="text"
+                className="form-control"
+                id="imei"
+                name="imei"
+                value={form.imei}
+                onChange={handleChange}
+                readOnly
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="deviceName">Device Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="deviceName"
+                name="deviceName"
+                value={form.deviceName}
+                onChange={handleChange}
+                readOnly
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="fromDate">From Date & Time</label>
+              <input
+                type="datetime-local"
+                className="form-control"
+                id="fromDate"
+                name="fromDate"
+                value={form.fromDate}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="toDate">To Date & Time</label>
+              <input
+                type="datetime-local"
+                className="form-control"
+                id="toDate"
+                name="toDate"
+                value={form.toDate}
+                onChange={handleChange}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">Submit</button>
+            <button type="button" className="btn btn-secondary" onClick={handleReset}>Reset</button>
+          </div>
+        </form>
+        <div className="map-container mt-4">
+          <LoadScript googleMapsApiKey="AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk">
+            <GoogleMap
+              mapContainerStyle={{ width: '100%', height: '400px' }}
+              center={mapCenter}
+              zoom={12}
+            >
+              {mapData.map((location, index) => (
+                <Marker key={index} position={{ lat: location.lat, lng: location.lng }} />
+              ))}
+            </GoogleMap>
+          </LoadScript>
         </div>
       </div>
     </div>

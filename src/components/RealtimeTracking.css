@@ -1,20 +1,22 @@
-
-/* RealtimeTracking.css */
-
 .realtime-tracking {
   display: flex;
   flex-direction: column;
+  padding: 20px;
 }
 
 .map-container {
   height: 400px;
   margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .drone-status-table {
   background-color: #f8f9fa;
   border-radius: 10px;
   padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .table-header {
@@ -75,21 +77,21 @@ th {
   margin-right: 5px;
 }
 
-.status.green {
+.status.active {
   background-color: green;
 }
 
-.status.red {
+.status.inactive {
   background-color: red;
 }
 
-.view-map-btn, .more-details-btn {
+.view-map-btn, .detailed-view-btn {
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin-right: 5px;
-  transition: transform 0.2s;
+  transition: transform 0.2s, background-color 0.2s;
 }
 
 .view-map-btn {
@@ -97,15 +99,16 @@ th {
   color: white;
 }
 
-.more-details-btn {
+.detailed-view-btn {
   background-color: #007bff;
   color: white;
 }
 
-.view-map-btn:hover, .more-details-btn:hover {
+.view-map-btn:hover, .detailed-view-btn:hover {
   transform: scale(1.1);
+  background-color: #0056b3; /* Darker blue for hover effect */
 }
 
-.view-map-btn:active, .more-details-btn:active {
+.view-map-btn:active, .detailed-view-btn:active {
   transform: scale(0.9);
 }

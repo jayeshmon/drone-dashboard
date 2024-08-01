@@ -44,7 +44,7 @@ const DroneCard = () => {
   });
 
   return (
-    <div className="drone-card-component container-fluid">
+    <div className="flight-card-component container-fluid">
       <div className="filter-bar row">
         <div className="col-6">
           <select className="form-select" value={filter} onChange={e => setFilter(e.target.value)}>
@@ -63,18 +63,18 @@ const DroneCard = () => {
           />
         </div>
       </div>
-      <div className="dronecard row">
+      <div className="row">
         {filteredDrones.map((drone, index) => (
-          <div key={index} className="drone-card col-12 col-md-6 col-lg-4">
-            <div className="dronecard-content">
-              <div className="drone-header">
-                <div className="drone-info">
-                  <h5 className="drone-name">{drone.drone_name}</h5>
-                  <p className="drone-model">{drone.model}</p>
+          <div key={index} className="flight-card col-12 col-md-6 col-lg-4">
+            <div className="flightcard-content">
+              <div className="flight-header">
+                <div className="flight-info">
+                  <h5 className="flight-name">{drone.drone_name}</h5>
+                  <p className="flight-model">{drone.model}</p>
                 </div>
                 <img src={drone.icon || droneIcon1} alt="drone icon" className="flight-icon" />
               </div>
-              <div className="drone-status">
+              <div className="flight-status">
                 <div className="status-item">
                   <p className="status-label">IMEI:</p>
                   <p className="status-value">{drone.imei}</p>
