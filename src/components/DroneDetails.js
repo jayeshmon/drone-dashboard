@@ -7,7 +7,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PublicIcon from '@mui/icons-material/Public';
 import RoadIcon from '@mui/icons-material/Directions';
 import Sidebar from './Sidebar';
-import { GoogleMap, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker, Polyline } from '@react-google-maps/api';
 import './DroneDetails.css';
 
 const DroneDetails = () => {
@@ -68,13 +68,17 @@ const DroneDetails = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form Submitted:', form);
-    // Fetch route history based on the form data and update mapData
-    // Example: fetch(`http://localhost:3003/routehistory?imei=${form.imei}&from=${form.fromDate}&to=${form.toDate}`)
-    // .then(response => response.json())
-    // .then(data => {
-    //   setMapData(data.routes);
-    // });
+    fetch(`http://localhost:3003/routehistory?imei=${form.imei}&from=${form.fromDate}&to=${form.toDate}`)
+      .then(response => response.json())
+      .then(data => {
+        setMapData(data.routes);
+        if (data.routes.length > 0) {
+          setMapCenter({
+            lat: data.routes[0].lat,
+            lng: data.routes[0].lng
+          });
+        }
+      });
   };
 
   if (loading) {
@@ -189,17 +193,19 @@ const DroneDetails = () => {
           </div>
         </form>
         <div className="map-container mt-4">
-          
-            <GoogleMap
-              mapContainerStyle={{ width: '100%', height: '400px' }}
-              center={mapCenter}
-              zoom={12}
-            >
-              {mapData.map((location, index) => (
-                <Marker key={index} position={{ lat: location.lat, lng: location.lng }} />
-              ))}
-            </GoogleMap>
-          
+          <GoogleMap
+            mapContainerStyle={{ width: '100%', height: '400px' }}
+            center={mapCenter}
+            zoom={12}
+          >
+            {mapData.map((location, index) => (
+              <Marker key={index} position={{ lat: location.lat, lng: location.lng }} />
+            ))}
+            <Polyline
+              path={mapData.map(location => ({ lat: location.lat, lng: location.lng }))}
+              options={{ strokeColor: '#FF0000', strokeOpacity: 1.0, strokeWeight: 2 }}
+            />
+          </GoogleMap>
         </div>
       </div>
     </div>

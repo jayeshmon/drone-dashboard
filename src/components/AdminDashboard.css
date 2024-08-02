@@ -1,22 +1,63 @@
-.super-admin-dashboard {
-    padding: 20px;
-  }
-  
-  .add-user-btn, .add-device-btn {
-    padding: 10px 20px;
-    margin: 20px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .add-user-btn:hover, .add-device-btn:hover {
-    background-color: #0056b3;
-  }
-  /* AdminDashboard.css */
-.modal {
+.admin-dashboard {
+  display: flex;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.content-wrapper {
+  padding: 20px;
+}
+
+.button-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.half-circle {
+  position: absolute;
+  top: 20px;
+  right: 5px;
+  width: 100px;
+  height: 200px;
+  background: rgba(4, 187, 197, 0.5);
+  border-top-left-radius: 150px;
+  border-bottom-left-radius: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+  transition: all 0.1s ease;
+}
+
+.half-circle:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.1);
+}
+
+.add-user-btn, .add-device-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: transparent;
+  color: white;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.add-user-btn:hover, .add-device-btn:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -29,7 +70,7 @@
   z-index: 1000;
 }
 
-.modal-content {
+.modal {
   background: #fff;
   padding: 20px;
   border-radius: 8px;

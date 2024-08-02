@@ -1,0 +1,129 @@
+.adminDashboard {
+  display: flex;
+  background-color: #f4f4f4; /* Background color for the dashboard */
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #ffffff; /* Background color for main content */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle 3D effect */
+  border-radius: 10px; /* Rounded corners for the main content box */
+}
+
+.contentWrapper {
+  padding: 20px;
+}
+
+.userManagement {
+  background-color: #ffffff; /* White background for user management section */
+  border-radius: 10px; /* Rounded corners for the user management section */
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Box shadow for subtle 3D effect */
+}
+
+.userManagement h2 {
+  font-size: 24px; /* Font size for the heading */
+  color: #333; /* Dark gray color for the heading */
+  margin-bottom: 20px; /* Space below the heading */
+}
+
+.tableResponsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto; /* Horizontal scroll for overflow */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+}
+
+.table {
+  width: 100%; /* Full width table */
+  margin-bottom: 1rem;
+  color: #212529; /* Text color */
+  border-collapse: separate; /* Separate borders for cells */
+  border-spacing: 0; /* No spacing between cells */
+}
+
+.table th, .table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6; /* Light gray border */
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6; /* Double border at the bottom */
+}
+
+.table tbody + tbody {
+  border-top: 2px solid #dee2e6; /* Double border at the top */
+}
+
+.tableSm th, .tableSm td {
+  padding: 0.3rem;
+}
+
+.tableBordered {
+  border: 1px solid #dee2e6; /* Light gray border */
+}
+
+.tableBordered th, .tableBordered td {
+  border: 1px solid #dee2e6;
+}
+
+.tableBordered thead th, .tableBordered thead td {
+  border-bottom-width: 2px; /* Thicker border at the bottom */
+}
+
+.tableHover tbody tr:hover {
+  color: #495057;
+  background-color: rgba(0, 0, 0, 0.075); /* Light gray background on hover */
+}
+
+.theadDark th {
+  color: #fff; /* White text */
+  background-color: #343a40; /* Dark background */
+  border-color: #454d55; /* Dark border */
+}
+
+.btn {
+  font-size: 0.875rem; /* Font size */
+  padding: 0.375rem 0.75rem; /* Padding */
+  margin: 0.2rem;
+  border-radius: 0.25rem; /* Rounded corners */
+}
+
+.btnSm {
+  font-size: 0.75rem; /* Smaller font size */
+  padding: 0.25rem 0.5rem;
+}
+
+.btnSuccess {
+  background-color: #28a745; /* Green background */
+  border-color: #28a745; /* Green border */
+}
+
+.btnDanger {
+  background-color: #dc3545; /* Red background */
+  border-color: #dc3545; /* Red border */
+}
+
+.btnSuccess:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.btnDanger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.inputGroupText {
+  background-color: #f8f9fa; /* Light background */
+  border: 1px solid #ced4da; /* Light gray border */
+  border-radius: 0.375rem; /* Rounded corners */
+}
+
+.inputGroup input {
+  border: 1px solid #ced4da; /* Light gray border */
+  border-radius: 0.375rem; /* Rounded corners */
+}
