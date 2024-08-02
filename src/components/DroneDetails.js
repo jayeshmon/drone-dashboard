@@ -9,6 +9,7 @@ import RoadIcon from '@mui/icons-material/Directions';
 import Sidebar from './Sidebar';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import './DroneDetails.css';
+import RouteHistory from './RouteHistory';
 
 const DroneDetails = () => {
   const { droneId } = useParams();
@@ -132,77 +133,9 @@ const DroneDetails = () => {
           <p>{/* Date & Time Filter */}</p>
         </div>
       </div>
-
+<RouteHistory/>
       {/* Route History Section */}
-      <div className="route-history mt-4">
-        <h3>Route History</h3>
-        <form onSubmit={handleSubmit} className="route-history-form">
-          <div className="input-group">
-            <div className="form-group">
-              <label htmlFor="imei">IMEI</label>
-              <input
-                type="text"
-                className="form-control"
-                id="imei"
-                name="imei"
-                value={form.imei}
-                onChange={handleChange}
-                readOnly
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="deviceName">Device Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="deviceName"
-                name="deviceName"
-                value={form.deviceName}
-                onChange={handleChange}
-                readOnly
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="fromDate">From Date & Time</label>
-              <input
-                type="datetime-local"
-                className="form-control"
-                id="fromDate"
-                name="fromDate"
-                value={form.fromDate}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="toDate">To Date & Time</label>
-              <input
-                type="datetime-local"
-                className="form-control"
-                id="toDate"
-                name="toDate"
-                value={form.toDate}
-                onChange={handleChange}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
-            <button type="button" className="btn btn-secondary" onClick={handleReset}>Reset</button>
-          </div>
-        </form>
-        <div className="map-container mt-4">
-          
-            <GoogleMap
-              mapContainerStyle={{ width: '100%', height: '400px' }}
-              center={mapCenter}
-              zoom={12}
-            >
-              {mapData.map((location, index) => (
-                <Marker key={index} position={{ lat: location.lat, lng: location.lng }} />
-              ))}
-            </GoogleMap>
-          
-        </div>
-      </div>
-    </div>
+     </div>
   );
 };
 

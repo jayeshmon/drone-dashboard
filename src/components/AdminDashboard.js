@@ -33,9 +33,9 @@ const AdminDashboard = ({ onAddUser, onAddDevice }) => {
         <div className="content-wrapper">
           <div className="row">
             <div className="col-12">
-            <LoadScript googleMapsApiKey="AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk">
-              <MapComponent />
-              </LoadScript>
+            
+              <MapComponent zoom={6}/>
+              
             </div>
           </div>
           <div className="row">
