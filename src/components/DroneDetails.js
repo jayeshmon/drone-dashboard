@@ -7,8 +7,14 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PublicIcon from '@mui/icons-material/Public';
 import RoadIcon from '@mui/icons-material/Directions';
 import Sidebar from './Sidebar';
+<<<<<<< HEAD
 import { GoogleMap, Marker, Polyline } from '@react-google-maps/api';
+=======
+
+
+>>>>>>> 6294f89dda62c94405ff42f28e58d338a833b6a0
 import './DroneDetails.css';
+import RouteHistory from './RouteHistory';
 
 const DroneDetails = () => {
   const { droneId } = useParams();
@@ -16,14 +22,8 @@ const DroneDetails = () => {
   const [drone, setDrone] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [form, setForm] = useState({
-    imei: '',
-    deviceName: '',
-    fromDate: '',
-    toDate: ''
-  });
-  const [mapData, setMapData] = useState([]);
-  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
+  
+  
 
   useEffect(() => {
     const imei = window.location.href.split('/').pop();
@@ -37,11 +37,7 @@ const DroneDetails = () => {
       })
       .then(data => {
         setDrone(data);
-        setForm(prevForm => ({ ...prevForm, imei: data.imei, deviceName: data.drone_name }));
-        setMapCenter({
-          lat: data.latestData.l,
-          lng: data.latestData.g
-        });
+        
         setLoading(false);
       })
       .catch(error => {
@@ -50,6 +46,7 @@ const DroneDetails = () => {
       });
   }, [droneId]);
 
+<<<<<<< HEAD
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prevForm => ({ ...prevForm, [name]: value }));
@@ -81,6 +78,9 @@ const DroneDetails = () => {
       });
   };
 
+=======
+  
+>>>>>>> 6294f89dda62c94405ff42f28e58d338a833b6a0
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -138,6 +138,7 @@ const DroneDetails = () => {
       </div>
 
       {/* Route History Section */}
+<<<<<<< HEAD
       <div className="route-history mt-4">
         <h3>Route History</h3>
         <form onSubmit={handleSubmit} className="route-history-form">
@@ -207,8 +208,10 @@ const DroneDetails = () => {
             />
           </GoogleMap>
         </div>
+=======
+      <RouteHistory/>
+>>>>>>> 6294f89dda62c94405ff42f28e58d338a833b6a0
       </div>
-    </div>
   );
 };
 

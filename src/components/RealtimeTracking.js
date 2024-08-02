@@ -1,51 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import GoogleMapReact from 'google-map-react';
-import lottie from 'lottie-web';
 import Sidebar from './Sidebar';
 import AdminSidebar from './AdminSidebar';
 import './RealtimeTracking.css';
-import droneAnimation from '../assets/Animation - 1720863701059.json';
-
-const DroneMarker = ({ lat, lng }) => {
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const instance = lottie.loadAnimation({
-      container: containerRef.current,
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      animationData: droneAnimation,
-      rendererSettings: { preserveAspectRatio: 'xMidYMid slice' }
-    });
-
-    return () => instance.destroy();
-  }, []);
-
-  const openInGoogleMaps = () => {
-    const url = `https://www.google.com/maps?q=${lat},${lng}`;
-    window.open(url, '_blank');
-  };
-
-  return (
-    <div
-      ref={containerRef}
-      style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-      onClick={openInGoogleMaps}
-    ></div>
-  );
-};
+import MapComponent from './MapComponent';
 
 const RealtimeTracking = () => {
-  const [mapCenter, setMapCenter] = useState({ lat: 10.055554, lng: 76.354738 });
-  const [mapZoom, setMapZoom] = useState(14);
   const [dronesData, setDronesData] = useState([]);
-  const navigate = useNavigate();
+  const [selectedDrone, setSelectedDrone] = useState(null);
+  const [lat, setLat] = useState(0);
+    const [lng, setLng] = useState(0);
+    const [zoom, setZoom] = useState(15);
   const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
+    
     const endpoint =
       user && user.role === 'admin'
         ? 'http://localhost:3003/alldronesdata'
@@ -58,10 +27,16 @@ const RealtimeTracking = () => {
   }, [user]);
 
   const viewMap = (drone) => {
-    // Ensure that the coordinates are properly extracted
-    const { l: lat, g: lng } = drone.latestData;
-    setMapCenter({ lat, lng });
-    setMapZoom(18); // Adjust zoom level as needed
+  
+    const droneLat = parseFloat(drone.latestData.l);
+    const droneLng = parseFloat(drone.latestData.g);
+    setLat(droneLat);
+    setLng(droneLng);
+    setZoom(50)
+   
+      
+
+    
   };
 
   return (
@@ -70,19 +45,11 @@ const RealtimeTracking = () => {
 
       <div className="main-content">
         <div className="map-container">
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: 'AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk' }}
-            center={mapCenter}
-            zoom={mapZoom}
-          >
-            {dronesData.map(drone => (
-              <DroneMarker
-                key={drone.id}
-                lat={drone.latestData.l}
-                lng={drone.latestData.g}
-              />
-            ))}
-          </GoogleMapReact>
+          <MapComponent 
+            lat={lat} 
+            lng={lng} 
+            zoom={zoom} 
+          />
         </div>
         <div className="drone-status-table">
           <div className="table-header">
@@ -109,7 +76,7 @@ const RealtimeTracking = () => {
             </thead>
             <tbody>
               {dronesData.map((drone, index) => (
-                <tr key={drone.id}>
+                <tr key={drone.id}> {/* Ensure each row has a unique key */}
                   <td>{index + 1}</td>
                   <td>{drone.imei}</td>
                   <td>{drone.drone_name}</td>

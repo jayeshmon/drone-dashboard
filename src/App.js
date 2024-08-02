@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
-
+import { LoadScript, Marker } from '@react-google-maps/api';
 
 import Dashboard from './components/Dashboard';
 import DroneDetails from './components/DroneDetails';
@@ -30,6 +30,7 @@ const ProtectedRoute = ({ element, roles, ...rest }) => {
 
 const App = () => {
   return (
+    
     <Router>
       <AuthProvider>
         <div className="app">
@@ -72,7 +73,10 @@ const App = () => {
           </Routes>
         </div>
       </AuthProvider>
+      
+      <LoadScript googleMapsApiKey="AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk"/>
     </Router>
+    
   );
 };
 
