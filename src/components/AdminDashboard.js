@@ -8,6 +8,7 @@ import Topbar from './Topbar';
 import './AdminDashboard.css';
 import AdminSidebar from './AdminSidebar';
 import Swal from 'sweetalert2';
+import { LoadScript, Marker } from '@react-google-maps/api';
 const AdminDashboard = ({ onAddUser, onAddDevice }) => {
   const [showAddUserForm, setShowAddUserForm] = useState(false);
   const [showAddDeviceForm, setShowAddDeviceForm] = useState(false);
@@ -32,7 +33,9 @@ const AdminDashboard = ({ onAddUser, onAddDevice }) => {
         <div className="content-wrapper">
           <div className="row">
             <div className="col-12">
+            <LoadScript googleMapsApiKey="AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk">
               <MapComponent />
+              </LoadScript>
             </div>
           </div>
           <div className="row">

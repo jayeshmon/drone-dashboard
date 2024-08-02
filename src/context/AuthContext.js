@@ -30,13 +30,13 @@ const AuthProvider = ({ children }) => {
       const user = { username, role };
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-      Swal.fire('Success','Welcome , You have logged in successfully', 'Success');
+      Swal.fire('success','Welcome , You have logged in successfully', 'success');
       setAuthState({ isAuthenticated: true, user, token });
       navigate(role === 'admin' ? '/admin' : '/dashboard');
     } catch (err) {
       console.error(err);
       
-      Swal.fire('Failed','Invalid credentials', 'failed');
+      Swal.fire('error','Invalid credentials', 'error');
     }
   };
 

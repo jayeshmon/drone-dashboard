@@ -7,7 +7,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PublicIcon from '@mui/icons-material/Public';
 import RoadIcon from '@mui/icons-material/Directions';
 import Sidebar from './Sidebar';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import './DroneDetails.css';
 
 const DroneDetails = () => {
@@ -189,7 +189,7 @@ const DroneDetails = () => {
           </div>
         </form>
         <div className="map-container mt-4">
-          <LoadScript googleMapsApiKey="AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk">
+          
             <GoogleMap
               mapContainerStyle={{ width: '100%', height: '400px' }}
               center={mapCenter}
@@ -199,7 +199,7 @@ const DroneDetails = () => {
                 <Marker key={index} position={{ lat: location.lat, lng: location.lng }} />
               ))}
             </GoogleMap>
-          </LoadScript>
+          
         </div>
       </div>
     </div>

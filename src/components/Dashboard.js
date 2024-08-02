@@ -7,6 +7,7 @@ import TilesComponent from './TilesComponent';
 import './Dashboard.css';
 import './Sidebar.css';
 import './Topbar.css';
+import { LoadScript, Marker } from '@react-google-maps/api';
 import Swal from 'sweetalert2';
 const Dashboard = () => {
   return (
@@ -17,7 +18,9 @@ const Dashboard = () => {
         <div className="content-wrapper">
           <div className="row">
             <div className="col-12">
+            <LoadScript googleMapsApiKey="AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk">
               <MapComponent />
+              </LoadScript>
             </div>
           </div>
           <div className="row">

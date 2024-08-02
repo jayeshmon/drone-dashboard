@@ -29,7 +29,7 @@ const UserManagement = () => {
         if (!response.ok) {
           throw new Error(`Failed to fetch users: ${response.statusText}`);
          
-         Swal.fire('Failed',`Failed to fetch users: ${response.statusText}`, 'failed');
+         Swal.fire('Failed',`Failed to fetch users: ${response.statusText}`, 'error');
           
         }
 
@@ -38,7 +38,7 @@ const UserManagement = () => {
         setLoading(false);
       } catch (err) {
         setError(err.message);
-        Swal.fire('Failed',err.message, 'failed');
+        Swal.fire('Failed',err.message, 'error');
         setLoading(false);
       }
     };
@@ -90,7 +90,7 @@ const UserManagement = () => {
 
       if (!response.ok) {
         throw new Error('Failed to delete user');
-        Swal.fire('Failed' ,`Failed to delete user`, 'Failed');
+        Swal.fire('Failed' ,`Failed to delete user`, 'error');
         
       }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import Swal from 'sweetalert2';
 import './MapComponent.css';
 
@@ -68,7 +68,7 @@ const MapComponent = () => {
   }, []);
 
   return (
-    <LoadScript googleMapsApiKey="AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk">
+    
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
@@ -82,7 +82,7 @@ const MapComponent = () => {
           />
         ))}
       </GoogleMap>
-    </LoadScript>
+    
   );
 };
 
