@@ -7,7 +7,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PublicIcon from '@mui/icons-material/Public';
 import RoadIcon from '@mui/icons-material/Directions';
 import Sidebar from './Sidebar';
-import { GoogleMap, Marker } from '@react-google-maps/api';
+
+
 import './DroneDetails.css';
 import RouteHistory from './RouteHistory';
 
@@ -17,14 +18,8 @@ const DroneDetails = () => {
   const [drone, setDrone] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [form, setForm] = useState({
-    imei: '',
-    deviceName: '',
-    fromDate: '',
-    toDate: ''
-  });
-  const [mapData, setMapData] = useState([]);
-  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
+  
+  
 
   useEffect(() => {
     const imei = window.location.href.split('/').pop();
@@ -38,11 +33,7 @@ const DroneDetails = () => {
       })
       .then(data => {
         setDrone(data);
-        setForm(prevForm => ({ ...prevForm, imei: data.imei, deviceName: data.drone_name }));
-        setMapCenter({
-          lat: data.latestData.l,
-          lng: data.latestData.g
-        });
+        
         setLoading(false);
       })
       .catch(error => {
@@ -51,33 +42,7 @@ const DroneDetails = () => {
       });
   }, [droneId]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm(prevForm => ({ ...prevForm, [name]: value }));
-  };
-
-  const handleReset = () => {
-    setForm({
-      imei: drone ? drone.imei : '',
-      deviceName: drone ? drone.drone_name : '',
-      fromDate: '',
-      toDate: ''
-    });
-    setMapData([]);
-    setMapCenter({ lat: drone ? drone.latestData.l : 0, lng: drone ? drone.latestData.g : 0 });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form Submitted:', form);
-    // Fetch route history based on the form data and update mapData
-    // Example: fetch(`http://localhost:3003/routehistory?imei=${form.imei}&from=${form.fromDate}&to=${form.toDate}`)
-    // .then(response => response.json())
-    // .then(data => {
-    //   setMapData(data.routes);
-    // });
-  };
-
+  
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -133,9 +98,10 @@ const DroneDetails = () => {
           <p>{/* Date & Time Filter */}</p>
         </div>
       </div>
-<RouteHistory/>
+
       {/* Route History Section */}
-     </div>
+      <RouteHistory/>
+      </div>
   );
 };
 
