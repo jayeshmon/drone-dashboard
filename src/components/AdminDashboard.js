@@ -98,22 +98,8 @@ const AdminDashboard = ({ onAddUser, onAddDevice }) => {
         <div className="content-wrapper">
           <div className="row">
             <div className="col-12">
-<<<<<<< HEAD
-              <MapComponent
-                droneLocations={droneLocations}
-                mapCenter={mapCenter}
-              />
-            </div>
-          </div>
-          <div className="button-wrapper">
-            <div className="half-circle">
-              <button className="add-user-btn" onClick={() => setShowAddUserForm(true)}>Add User</button>
-              <button className="add-device-btn" onClick={() => setShowAddDeviceForm(true)}>Add Device</button>
-=======
-            
-              <MapComponent zoom={6}/>
-              
->>>>>>> 6294f89dda62c94405ff42f28e58d338a833b6a0
+
+<MapComponent zoom={6}/>
             </div>
           </div>
           <div className="row">

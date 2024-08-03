@@ -31,6 +31,7 @@ const TilesComponent = ({ onTileClick }) => {
 
   useEffect(() => {
     // Initial data fetch
+    
     updateData();
 
     // Set interval to update data every 10 seconds
@@ -41,7 +42,9 @@ const TilesComponent = ({ onTileClick }) => {
   }, []);
 
   const handleClick = (type) => {
-    onTileClick(type);
+   localStorage.setItem("type",type);
+
+    
   };
 
   const data = [

@@ -13,13 +13,13 @@ const defaultCenter = {
   lng: -122.4194, // Default longitude
 };
 
-const MapComponent = ({ lat, lng, zoom }) => {
+const MapComponent = ({ lat, lng, zoom ,markers}) => {
   const [locations, setLocations] = useState([]);
   const [center, setCenter] = useState(defaultCenter);
   const [currentZoom, setCurrentZoom] = useState(zoom);
   useEffect(() => {
    
-    if (lat && lng &&zoom ) {
+    if (lat && lng &&zoom  ) {
      
       setCenter({ lat, lng });
       setCurrentZoom(zoom ); // Use provided zoom or default to 14
@@ -36,10 +36,30 @@ const MapComponent = ({ lat, lng, zoom }) => {
         } else {
           response = await fetch(`http://localhost:3003/dronesdata/${username}`);
         }
-        const data = await response.json();
-
+        let data = await response.json();
+        const type=localStorage.getItem('type');
+        if(type=='all' || !type){
         localStorage.setItem('droneData', JSON.stringify(data));
-
+        console.log(data);
+        }
+        else if(type=="active"){
+          let active = data.filter(drone => drone.latestData?.p === 1);
+          console.log(active);
+          
+          data=active;
+        }
+        else if(type=="inactive"){
+          let inactive = data.filter(drone => drone.latestData?.p === 0);
+          console.log(inactive);
+         
+          data=inactive;
+        }
+        else if(type=="flying"){
+          let flying = data.filter(drone => drone.latestData?.s> 0);
+          console.log(flying);
+          
+          data=flying;
+        }
         const droneLocations = data
           .filter(drone => {
             const lat = parseFloat(drone.latestData?.l);
@@ -61,7 +81,7 @@ const MapComponent = ({ lat, lng, zoom }) => {
         }
       } catch (error) {
         console.error('Error fetching drone data:', error);
-        Swal.fire('Error', 'Failed to load drone data', 'error');
+        //Swal.fire('error', 'Failed to load drone data', 'error');
       }
     };
 
