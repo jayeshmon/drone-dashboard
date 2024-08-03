@@ -42,7 +42,9 @@ const AdminDashboard = ({ onAddUser, onAddDevice }) => {
     onAddUser(user);
     setShowAddUserForm(false);
   };
-
+const handleTileClick = ()=>{
+  
+}
   const handleAddDevice = (device) => {
     console.log("Adding device", device);
     onAddDevice(device);
@@ -63,6 +65,7 @@ const AdminDashboard = ({ onAddUser, onAddDevice }) => {
   }
 
   const onTileClick = (type) => {
+    alert(type);
     const droneData = JSON.parse(localStorage.getItem('droneData')) || [];
     let filteredDrones = [];
     
@@ -104,7 +107,7 @@ const AdminDashboard = ({ onAddUser, onAddDevice }) => {
           </div>
           <div className="row">
             <div className="col-12">
-              <TilesComponent onTileClick={onTileClick} />
+              <TilesComponent/>
             </div>
           </div>
           <div className="row">
@@ -112,6 +115,14 @@ const AdminDashboard = ({ onAddUser, onAddDevice }) => {
               <DroneCard />
             </div>
           </div>
+          <div className="row actions">
+        <button  onClick={() => setShowAddUserForm(true)} className="btn btn-primary">
+          Add User
+        </button>
+        <button onClick={() => setShowAddDeviceForm(true)} className="btn btn-primary">
+          Add Drone
+        </button>
+      </div>
         </div>
       </div>
 

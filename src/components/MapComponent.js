@@ -13,17 +13,45 @@ const defaultCenter = {
   lng: -122.4194, // Default longitude
 };
 
-const MapComponent = ({ lat, lng, zoom ,markers}) => {
+const MapComponent = ({ lat, lng, zoom, markers }) => {
   const [locations, setLocations] = useState([]);
   const [center, setCenter] = useState(defaultCenter);
   const [currentZoom, setCurrentZoom] = useState(zoom);
+
   useEffect(() => {
-   
-    if (lat && lng &&zoom  ) {
-     
-      setCenter({ lat, lng });
-      setCurrentZoom(zoom ); // Use provided zoom or default to 14
-    }
+    const renderMap = () => {
+      const data = JSON.parse(localStorage.getItem('droneData')) || [];
+      const type = localStorage.getItem('type');
+      let filteredData = data;
+
+      if (type === 'active') {
+        filteredData = data.filter(drone => drone.latestData?.p === 1);
+      } else if (type === 'inactive') {
+        filteredData = data.filter(drone => drone.latestData?.p === 0);
+      } else if (type === 'flying') {
+        filteredData = data.filter(drone => drone.latestData?.s > 0);
+      }
+
+      const droneLocations = filteredData
+        .filter(drone => {
+          const lat = parseFloat(drone.latestData?.l);
+          const lng = parseFloat(drone.latestData?.g);
+          return !isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0;
+        })
+        .map(drone => ({
+          lat: parseFloat(drone.latestData.l),
+          lng: parseFloat(drone.latestData.g),
+          title: drone.drone_name || 'Unknown Drone',
+        }));
+
+      setLocations(droneLocations);
+
+      if (droneLocations.length > 0) {
+        setCenter({ lat: lat || droneLocations[0].lat, lng: lng || droneLocations[0].lng });
+        setCurrentZoom(zoom || 14);
+      }
+    };
+
     const fetchDronesData = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user'));
@@ -36,77 +64,37 @@ const MapComponent = ({ lat, lng, zoom ,markers}) => {
         } else {
           response = await fetch(`http://localhost:3003/dronesdata/${username}`);
         }
-        let data = await response.json();
-        const type=localStorage.getItem('type');
-        if(type=='all' || !type){
+        const data = await response.json();
         localStorage.setItem('droneData', JSON.stringify(data));
-        console.log(data);
-        }
-        else if(type=="active"){
-          let active = data.filter(drone => drone.latestData?.p === 1);
-          console.log(active);
-          
-          data=active;
-        }
-        else if(type=="inactive"){
-          let inactive = data.filter(drone => drone.latestData?.p === 0);
-          console.log(inactive);
-         
-          data=inactive;
-        }
-        else if(type=="flying"){
-          let flying = data.filter(drone => drone.latestData?.s> 0);
-          console.log(flying);
-          
-          data=flying;
-        }
-        const droneLocations = data
-          .filter(drone => {
-            const lat = parseFloat(drone.latestData?.l);
-            const lng = parseFloat(drone.latestData?.g);
-            return !isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0;
-          })
-          .map(drone => ({
-            lat: parseFloat(drone.latestData.l),
-            lng: parseFloat(drone.latestData.g),
-            title: drone.drone_name || 'Unknown Drone',
-            
-          }));
+        localStorage.setItem('droneData2', JSON.stringify(data));
 
-        localStorage.setItem('droneLocations', JSON.stringify(droneLocations));
-        setLocations(droneLocations);
-
-        if (droneLocations.length > 0) {
-          setCenter({lat: lat?lat:droneLocations[0].lat , lng: lng?lng:droneLocations[0].lng});
-        }
+        renderMap();
       } catch (error) {
         console.error('Error fetching drone data:', error);
-        //Swal.fire('error', 'Failed to load drone data', 'error');
+        Swal.fire('error', 'Failed to load drone data', 'error');
       }
     };
 
     fetchDronesData();
-    const intervalId = setInterval(fetchDronesData, 10000);
+    const intervalId = setInterval(fetchDronesData, 2000); // Fetch data and render map every 2 seconds
 
-    return () => clearInterval(intervalId);
-  }, [lat,lng,zoom]);
+    return () => clearInterval(intervalId); // Clear interval on component unmount
+  }, [lat, lng, zoom]);
 
   return (
-    
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={currentZoom}
-      >
-        {locations.map((location, index) => (
-          <Marker
-            key={index}
-            position={{ lat: location.lat, lng: location.lng }}
-            title={location.title}
-          />
-        ))}
-      </GoogleMap>
-  
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={currentZoom}
+    >
+      {locations.map((location, index) => (
+        <Marker
+          key={index}
+          position={{ lat: location.lat, lng: location.lng }}
+          title={location.title}
+        />
+      ))}
+    </GoogleMap>
   );
 };
 

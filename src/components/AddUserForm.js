@@ -28,18 +28,18 @@ const AddUserForm = ({ onClose, onSave }) => {
         const data = await response.json();
         console.log('User registered:', data);
         Swal.fire('Success' ,`User Added Successfully:  `, 'Success');
-        onSave(newUser);
+       // onSave(newUser);
        
       } else {
         const error = await response.text();
         console.error('Error registering user:', error);
         
-        Swal.fire('Error' ,`Error Registering User: ${error} `, 'Error');
+        Swal.fire('error' ,`Error Registering User: ${error} `, 'error');
       }
     } catch (err) {
       console.error('Error registering user:', err.message);
    
-      Swal.fire('Error' ,`Error Registering User ${err.message} `, 'Error');
+      Swal.fire('error' ,`Error Registering User ${err.message} `, 'error');
     }
 
     onClose();

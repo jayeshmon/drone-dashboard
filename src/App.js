@@ -3,7 +3,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { LoadScript, Marker } from '@react-google-maps/api';
-
 import Dashboard from './components/Dashboard';
 import DroneDetails from './components/DroneDetails';
 import RealtimeTracking from './components/RealtimeTracking';

@@ -10,7 +10,7 @@ const RealtimeTracking = () => {
   const [selectedDrone, setSelectedDrone] = useState(null);
   const [lat, setLat] = useState(0);
     const [lng, setLng] = useState(0);
-    const [zoom, setZoom] = useState(15);
+    const [zoom, setZoom] = useState(10);
   const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const RealtimeTracking = () => {
     const droneLng = parseFloat(drone.latestData.g);
     setLat(droneLat);
     setLng(droneLng);
-    setZoom(50)
+    setZoom(12)
    
       
 

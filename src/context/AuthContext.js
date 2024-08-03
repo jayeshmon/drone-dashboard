@@ -30,7 +30,9 @@ const AuthProvider = ({ children }) => {
       const user = { username, role };
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.removeItem('droneData');
       Swal.fire('success','Welcome , You have logged in successfully', 'success');
+
       setAuthState({ isAuthenticated: true, user, token });
       navigate(role === 'admin' ? '/admin' : '/dashboard');
     } catch (err) {
@@ -43,6 +45,8 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('droneData');
+    localStorage.setItem('type','all')
     setAuthState({ isAuthenticated: false, user: null, token: null });
     navigate('/login');
   };

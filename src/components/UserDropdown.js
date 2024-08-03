@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+
 const UserDropdown = ({ selectedUser, onUserChange }) => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,10 +14,10 @@ const UserDropdown = ({ selectedUser, onUserChange }) => {
           setUsers(data);
         } else {
           console.error('Error fetching users:', await response.text());
-          Swal.fire('Error' ,`Error Fetching Users:  `, 'Error');
+          Swal.fire('Error', 'Error Fetching Users', 'error');
         }
       } catch (err) {
-        Swal.fire('Error' ,`Error fetching users:', ${err.message} `, 'Error');
+        Swal.fire('Error', `Error fetching users: ${err.message}`, 'error');
         console.error('Error fetching users:', err.message);
       }
     };
@@ -40,8 +41,11 @@ const UserDropdown = ({ selectedUser, onUserChange }) => {
         value={searchTerm}
         onChange={handleSearchChange}
       />
-      <select value={selectedUser} onChange={(e) => onUserChange(e.target.value)}>
-        <option value="0">select user</option>
+      <select
+        value={selectedUser}
+        onChange={(e) => onUserChange(e.target.value)}
+      >
+        <option value="">Select User</option>
         {filteredUsers.map(user => (
           <option key={user._id} value={user._id}>
             {user.companyName}

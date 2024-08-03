@@ -6,7 +6,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import FlightIcon from '@mui/icons-material/Flight';
 import MapIcon from '@mui/icons-material/Map';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-
+import Swal from 'sweetalert2';
 // Define default values
 const getDroneDataFromLocalStorage = () => JSON.parse(localStorage.getItem('droneData')) || [];
 
@@ -42,8 +42,16 @@ const TilesComponent = ({ onTileClick }) => {
   }, []);
 
   const handleClick = (type) => {
+   
+    if(type!==undefined){
    localStorage.setItem("type",type);
-
+   Swal.fire({
+    title: 'Changed!',
+    text: "Data changed to "+type+" drones",
+    icon: 'success',
+    confirmButtonText: 'OK',
+  });
+    }
     
   };
 
