@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem('droneData');
     localStorage.setItem('type','all')
     setAuthState({ isAuthenticated: false, user: null, token: null });
-    navigate('/login');
+    navigate('http://dashboard.fuselage.co.in:3001/login');
   };
 
   return (
