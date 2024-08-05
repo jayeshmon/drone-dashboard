@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const res = await axios.post('http://localhost:3003/login', { username, password });
+      const res = await axios.post('http://dashboard.fuselage.co.in:3003/login', { username, password });
       const { token, role } = res.data;
       const user = { username, role };
       localStorage.setItem('token', token);

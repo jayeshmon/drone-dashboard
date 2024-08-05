@@ -17,8 +17,8 @@ const RealtimeTracking = () => {
     
     const endpoint =
       user && user.role === 'admin'
-        ? 'http://localhost:3003/alldronesdata'
-        : `http://localhost:3003/dronesdata/${user.username}`;
+        ? 'http://dashboard.fuselage.co.in:3003/alldronesdata'
+        : `http://dashboard.fuselage.co.in:3003/dronesdata/${user.username}`;
 
     fetch(endpoint)
       .then(response => response.json())

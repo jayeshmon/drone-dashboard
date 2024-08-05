@@ -16,7 +16,7 @@ const AddUserForm = ({ onClose, onSave }) => {
     const newUser = { companyName,firstName, lastName, mobile, username, password, role, assignedDevice };
 
     try {
-      const response = await fetch('http://localhost:3003/register', {
+      const response = await fetch('http://dashboard.fuselage.co.in:3003/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
