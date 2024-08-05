@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
       Swal.fire('success','Welcome , You have logged in successfully', 'success');
 
       setAuthState({ isAuthenticated: true, user, token });
-      navigate(role === 'admin' ? '/admin' : '/dashboard');
+      navigate(role === 'admin' ? 'http://dashboard.fuselage.co.in:3001/admin' : 'http://dashboard.fuselage.co.in:3001/dashboard');
     } catch (err) {
       console.error(err);
       
