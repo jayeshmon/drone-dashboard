@@ -9,6 +9,7 @@
 
 .content-wrapper {
   padding: 20px;
+  height:auto !important;
 }
 
 .button-wrapper {
