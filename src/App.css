@@ -1,5 +1,5 @@
 .app {
-  display: flex;
+  
 }
 
 .sidebar {
@@ -10,7 +10,6 @@
   margin-left: 80px;
   padding: 20px;
   width: calc(100% - 80px);
-  overflow-y: auto;
   transition: margin-left 0.3s, width 0.3s;
 }
 
@@ -31,7 +30,7 @@
 
 .content-wrapper {
   margin-top: 50px;
-  height: auto !important;
+  width: 100% !important;
 }
 
 .sidebar-footer {
