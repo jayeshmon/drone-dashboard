@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
       Swal.fire('success','Welcome , You have logged in successfully', 'success');
 
       setAuthState({ isAuthenticated: true, user, token });
-      navigate(role === 'admin' ? 'http://dashboard.fuselage.co.in:3001/admin' : 'http://dashboard.fuselage.co.in:3001/dashboard');
+      navigate(role === 'admin' ? '/admin' : '/dashboard');
     } catch (err) {
       console.error(err);
       
@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem('droneData');
     localStorage.setItem('type','all')
     setAuthState({ isAuthenticated: false, user: null, token: null });
-    navigate('http://dashboard.fuselage.co.in:3001/login');
+    navigate('/login');
   };
 
   return (
