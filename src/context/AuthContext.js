@@ -1,4 +1,3 @@
-// src/context/AuthContext.js
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -31,14 +30,13 @@ const AuthProvider = ({ children }) => {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.removeItem('droneData');
-      Swal.fire('success','Welcome , You have logged in successfully', 'success');
+      Swal.fire('success', 'Welcome, You have logged in successfully', 'success');
 
       setAuthState({ isAuthenticated: true, user, token });
       navigate(role === 'admin' ? '/admin' : '/dashboard');
     } catch (err) {
       console.error(err);
-      
-      Swal.fire('error','Invalid credentials', 'error');
+      Swal.fire('error', 'Invalid credentials', 'error');
     }
   };
 
@@ -46,7 +44,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('droneData');
-    localStorage.setItem('type','all')
+    localStorage.setItem('type', 'all');
     setAuthState({ isAuthenticated: false, user: null, token: null });
     navigate('/login');
   };
