@@ -52,7 +52,7 @@ const handleTileClick = ()=>{
   };
 
   const { isLoaded, loadError } = useLoadScript({
-    //googleMapsApiKey: "AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk",
+    googleMapsApiKey: "AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk",
     libraries,
   });
 
