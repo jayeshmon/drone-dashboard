@@ -48,7 +48,7 @@ const MapComponent = ({ lat, lng, zoom, markers }) => {
 
       if (droneLocations.length > 0) {
         setCenter({ lat: lat || droneLocations[0].lat, lng: lng || droneLocations[0].lng });
-        setCurrentZoom(zoom || 14);
+        setCurrentZoom(zoom || 8);
       }
     };
 
