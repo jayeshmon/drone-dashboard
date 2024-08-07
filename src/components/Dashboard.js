@@ -19,7 +19,7 @@ const Dashboard = () => {
           <div className="row">
             <div className="col-12">
           
-              <MapComponent />
+              <MapComponent zoom={22} />
               
             </div>
           </div>
