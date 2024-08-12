@@ -32,7 +32,7 @@ const RealtimeTracking = () => {
     const droneLng = parseFloat(drone.latestData.g);
     setLat(droneLat);
     setLng(droneLng);
-    setZoom(12)
+    setZoom(25)
    
       
 

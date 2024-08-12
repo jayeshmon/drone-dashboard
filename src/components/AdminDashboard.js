@@ -102,7 +102,7 @@ const handleTileClick = ()=>{
           <div className="row">
             <div className="col-12">
 
-<MapComponent zoom={6}/>
+<MapComponent zoom={25}/>
             </div>
           </div>
           <div className="row">

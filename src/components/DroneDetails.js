@@ -104,7 +104,7 @@ const DroneDetails = () => {
           
         </div>
       </div>
-      <RouteHistory/>
+      <RouteHistory imei="{imei}"/>
   </div>
   
   

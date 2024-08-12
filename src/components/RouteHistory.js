@@ -57,6 +57,7 @@ const RouteHistory = () => {
           <label htmlFor="imei">IMEI</label>
           <input
             type="text"
+            readOnly="true"
             id="imei"
             value={imei}
             onChange={(e) => setImei(e.target.value)}
@@ -90,7 +91,7 @@ const RouteHistory = () => {
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             center={mapCenter}
-            zoom={6}
+            zoom={30}
           >
             {mapData.length > 0 && (
               <Polyline
