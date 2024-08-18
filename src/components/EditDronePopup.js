@@ -22,7 +22,7 @@ const EditDronePopup = ({ drone, onClose, onSave }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://dashboard.fuselage.co.in:3003.co.in:3003/drones/${drone._id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/drones/${drone._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

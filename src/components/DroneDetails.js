@@ -28,7 +28,7 @@ const DroneDetails = () => {
   useEffect(() => {
     const imei = window.location.href.split('/').pop();
 
-    fetch(`https://dashboard.fuselage.co.in:3003.co.in:3003/dronedata/${imei}`)
+    fetch(`${process.env.REACT_APP_API_URL}/dronedata/${imei}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');

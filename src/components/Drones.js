@@ -25,9 +25,9 @@ const Drones = () => {
        //dronesdata/:username
        let response ="";
        if(user.role=="admin"){
-       response = await fetch('https://dashboard.fuselage.co.in:3003.co.in:3003/alldronesdata');
+       response = await fetch(`${process.env.REACT_APP_API_URL}/alldronesdata`);
     }else{
-      response = await fetch(`https://dashboard.fuselage.co.in:3003.co.in:3003/dronesdata/${user.username}`);
+      response = await fetch(`${process.env.REACT_APP_API_URL}/dronesdata/${user.username}`);
 
     }
       if (!response.ok) {
@@ -71,7 +71,7 @@ const Drones = () => {
 
   const updateDrone = async (id, updatedDrone) => {
     try {
-      const response = await fetch(`https://dashboard.fuselage.co.in:3003.co.in:3003/drones/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/drones/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ const Drones = () => {
 
   const deleteDrone = async (imei) => {
     try {
-      const response = await fetch(`https://dashboard.fuselage.co.in:3003.co.in:3003/drones/delete/${imei}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/drones/delete/${imei}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -8,7 +8,7 @@ const UserDropdown = ({ selectedUser, onUserChange }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('https://dashboard.fuselage.co.in:3003/users/user');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/users/user`);
         if (response.ok) {
           const data = await response.json();
           setUsers(data);

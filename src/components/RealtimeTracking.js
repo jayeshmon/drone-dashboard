@@ -17,8 +17,8 @@ const RealtimeTracking = () => {
     
     const endpoint =
       user && user.role === 'admin'
-        ? 'https://dashboard.fuselage.co.in:3003/alldronesdata'
-        : `https://dashboard.fuselage.co.in:3003/dronesdata/${user.username}`;
+        ? `${process.env.REACT_APP_API_URL}/alldronesdata`
+        : `${process.env.REACT_APP_API_URL}/dronesdata/${user.username}`;
 
     fetch(endpoint)
       .then(response => response.json())

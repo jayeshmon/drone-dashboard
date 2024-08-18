@@ -17,7 +17,7 @@ const RouteHistory = () => {
 
   const fetchData = () => {
     if (imei && startDate && endDate) {
-      fetch(`https://dashboard.fuselage.co.in:3003/dronedatabydate/${imei}/${startDate}/${endDate}`)
+      fetch(`${process.env.REACT_APP_API_URL}/dronedatabydate/${imei}/${startDate}/${endDate}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error('Failed to fetch route history');

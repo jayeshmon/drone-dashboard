@@ -16,7 +16,7 @@ const AddUserForm = ({ onClose, onSave }) => {
     const newUser = { companyName,firstName, lastName, mobile, username, password, role, assignedDevice };
 
     try {
-      const response = await fetch('https://dashboard.fuselage.co.in:3003.co.in:3003/register', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

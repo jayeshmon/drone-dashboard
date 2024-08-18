@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     try {
       Swal.fire('success',`${process.env.REACT_APP_API_URL}`,"success");
-      const res = await axios.post(`${process.env.REACT_APP_SECRET_NAME}/login`, { username, password });
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/login`, { username, password });
       const { token, role } = res.data;
       const user = { username, role };
       localStorage.setItem('token', token);
