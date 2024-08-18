@@ -24,7 +24,8 @@ const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const res = await axios.post('https://dashboard.fuselage.co.in:3003/login', { username, password });
+      Swal.fire('success',`${process.env.REACT_APP_API_URL}`,"success");
+      const res = await axios.post(`${process.env.REACT_APP_SECRET_NAME}/login`, { username, password });
       const { token, role } = res.data;
       const user = { username, role };
       localStorage.setItem('token', token);

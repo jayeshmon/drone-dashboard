@@ -11,6 +11,8 @@ import './App.css';
 import UserManagement from './UserManagement';
 import Drones from './components/Drones';
 import FleetManagement from './components/FleetManagement';
+require('dotenv').config()
+
 
 const ProtectedRoute = ({ element, roles, ...rest }) => {
   const { authState } = React.useContext(AuthContext);
