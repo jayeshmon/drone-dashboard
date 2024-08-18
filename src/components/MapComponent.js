@@ -60,9 +60,9 @@ const MapComponent = ({ lat, lng, zoom, markers }) => {
 
         let response;
         if (role === 'admin') {
-          response = await fetch('http://dashboard.fuselage.co.in:3003/alldronesdata');
+          response = await fetch('https://dashboard.fuselage.co.in:3003.co.in:3003/alldronesdata');
         } else {
-          response = await fetch(`http://dashboard.fuselage.co.in:3003/dronesdata/${username}`);
+          response = await fetch(`https://dashboard.fuselage.co.in:3003.co.in:3003/dronesdata/${username}`);
         }
         const data = await response.json();
         localStorage.setItem('droneData', JSON.stringify(data));

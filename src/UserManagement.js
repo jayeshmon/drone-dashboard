@@ -22,7 +22,7 @@ const UserManagement = () => {
           throw new Error('No token found');
         }
 
-        const response = await fetch('http://dashboard.fuselage.co.in:3003/users', {
+        const response = await fetch('https://dashboard.fuselage.co.in:3003/users', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -52,7 +52,7 @@ const UserManagement = () => {
 
   const handleEditSave = async (updatedUser) => {
     try {
-      const response = await fetch(`http://dashboard.fuselage.co.in:3003/users/${updatedUser.username}`, {
+      const response = await fetch(`https://dashboard.fuselage.co.in:3003/users/${updatedUser.username}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ const UserManagement = () => {
 
   const handleDeleteClick = async (username) => {
     try {
-      const response = await fetch(`http://dashboard.fuselage.co.in:3003/users/delete/${username}`, {
+      const response = await fetch(`https://dashboard.fuselage.co.in:3003/users/delete/${username}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`

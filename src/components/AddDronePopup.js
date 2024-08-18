@@ -23,7 +23,7 @@ const AddDronePopup = ({ onClose, onSave }) => {
     try {
       const token = localStorage.getItem('token'); // Retrieve the token from localStorage
 
-      const response = await fetch('http://dashboard.fuselage.co.in:3003/drones', {
+      const response = await fetch('https://dashboard.fuselage.co.in:3003.co.in:3003/drones', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
