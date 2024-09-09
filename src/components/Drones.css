@@ -112,3 +112,46 @@
   background-color: #1a1a2e;
   color: white;
 }
+.drone-drones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.drone-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.drone-search-bar input {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.drone-search-bar .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.drone-search-bar .btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.drone-search-bar .btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+}
+
+.drone-search-bar svg {
+  cursor: pointer;
+  font-size: 18px;
+  color: #333;
+}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './EditDronePopup.css';
 import UserDropdown from './UserDropdown'; // Import the UserDropdown component
 import Swal from 'sweetalert2';
+
 const EditDronePopup = ({ drone, onClose, onSave }) => {
   const [imei, setImei] = useState(drone.imei);
   const [droneName, setDroneName] = useState(drone.drone_name);
@@ -14,7 +15,7 @@ const EditDronePopup = ({ drone, onClose, onSave }) => {
 
     // Validate that an assigned user is selected
     if (!assignedUser) {
-      alert('Please select a user to assign the drone.');
+      Swal.fire('Error', 'Please select a user to assign the drone.', 'error');
       return;
     }
 
@@ -26,26 +27,33 @@ const EditDronePopup = ({ drone, onClose, onSave }) => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(updatedDrone)
+        body: JSON.stringify(updatedDrone),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        Swal.fire('Updated' ,`Drone updated: `, 'Updated');
-        console.log('Drone updated:', data);
-        onSave(data);
+        const contentType = response.headers.get('content-type');
+
+        if (contentType && contentType.includes('application/json')) {
+          const data = await response.json();
+          Swal.fire('Updated', 'Drone updated successfully', 'success');
+          console.log('Drone updated:', data);
+          onSave(data); // Call onSave with the updated drone data
+        } else {
+          const message = await response.text();
+          Swal.fire('Updated', message, 'success');
+          console.log('Drone updated:', message);
+          onSave(); // Call onSave to trigger the re-fetching or state update
+        }
       } else {
         const error = await response.text();
-        Swal.fire('Error' ,`Error Updating drone: ${error} `, 'Error');
+        Swal.fire('Error', `Error updating drone: ${error}`, 'error');
         console.error('Error updating drone:', error);
-        
       }
     } catch (err) {
-      Swal.fire('Error' ,`Error Updating drone: ${err.message} `, 'Error');
+      Swal.fire('Error', `Error updating drone: ${err.message}`, 'error');
       console.error('Error updating drone:', err.message);
-      
     }
 
     onClose();

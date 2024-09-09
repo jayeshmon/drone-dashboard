@@ -1,0 +1,203 @@
+
+/* Main Content Wrapper */
+.user-content {
+  margin-left: 50px !important;
+  padding: 20px;
+  background-color: #ffffff !important;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Content Wrapper */
+.content-wrapper {
+  margin: 0 auto;
+}
+
+/* User Management Title */
+.user-management h2 {
+  font-size: 24px;
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+/* Table Styles */
+.table-responsive {
+  width: 100%;
+  margin-top: 20px;
+}
+
+table.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+thead.thead-dark {
+  background-color: #6d6b6b !important;
+  color: #ffffff;
+}
+
+thead.thead-dark th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+tbody tr {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #dddddd !important;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody td {
+  padding: 12px;
+  font-size: 14px;
+  color: #333333;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table-bordered {
+  border: 1px solid #dddddd;
+}
+
+/* Unified Button Styles */
+.btn {
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-sm {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+/* Status Indicators */
+.status-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-indicator.green {
+  background-color: #28a745;
+}
+
+.status-indicator.red {
+  background-color: #dc3545;
+}
+
+/* Toolbar Styles */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.searchbar {
+  display: flex;
+  align-items: center;
+}
+
+.searchbar input.form-control {
+  width: 200px;
+  margin-right: 10px;
+}
+
+.searchbar svg {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.container {
+  max-width: 100% !important;
+  margin-top: 60px !important;
+}
+
+/* Additional table styles for consistency */
+.table-responsive {
+  margin-top: 20px;
+}
+
+table.table-bordered {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.table-bordered th, table.table-bordered td {
+  border: 1px solid #ccc8c8;
+  padding: 12px;
+}
+
+table.table-bordered th {
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+}
+
+table.table-bordered tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+table.table-bordered tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+table.table-bordered .btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+table.table-bordered .btn-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+table.table-bordered .btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+table.table-bordered .btn-success:hover {
+  background-color: #218838;
+}
+
+table.table-bordered .btn-danger:hover {
+  background-color: #c82333;
+}

@@ -5,26 +5,25 @@
 .main-content {
   flex-grow: 1;
   padding: 20px;
+  position: relative;
 }
 
 .content-wrapper {
   padding: 20px;
-  width:100% !important;
+  width: 100% !important;
 }
 
 .button-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
 }
 
 .half-circle {
-  position: absolute;
-  top: 20px;
-  right: 5px;
-  width: 100px;
-  height: 200px;
+  width: 120px;
+  height: 220px;
   background: rgba(4, 187, 197, 0.5);
   border-top-left-radius: 150px;
   border-bottom-left-radius: 150px;
@@ -32,8 +31,8 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  padding: 10px;
-  transition: all 0.1s ease;
+  padding: 20px;
+  transition: all 0.3s ease;
 }
 
 .half-circle:hover {
@@ -42,19 +41,40 @@
 }
 
 .add-user-btn, .add-device-btn {
-  width: 100%;
-  padding: 10px;
-  background-color: transparent;
-  color: white;
+  width: 70px;
+  height: 70px;
+  background-color: rgb(178, 177, 186);
   border: none;
-  text-align: center;
   cursor: pointer;
-  border-radius: 50px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .add-user-btn:hover, .add-device-btn:hover {
+  transform: scale(1.2);
   background-color: #007bff;
+  color: #fff;
+}
+
+.add-user-btn img, .add-device-btn img {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 8px;
+}
+
+.add-user-btn span, .add-device-btn span {
+  font-size: 14px;
+  color: #333;
+}
+
+.add-user-btn:hover span, .add-device-btn:hover span {
   color: #fff;
 }
 

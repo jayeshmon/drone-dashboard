@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Topbar from './components/Topbar';
 import AdminSidebar from './components/AdminSidebar';
-import './UserManagement.module.css';
+import './UserManagement.css';
 import EditUserForm from './components/EditUserForm';
+import AddUserForm from './components/AddUserForm';
 import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FaDownload, FaPlus, FaSearch } from 'react-icons/fa';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showEditForm, setShowEditForm] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -94,6 +98,37 @@ const UserManagement = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleAddClick = () => {
+    setShowAddForm(true);
+  };
+
+  const handleDownloadClick = () => {
+    const csvData = users.map(user => ({
+      Username: user.username,
+      Company: user.companyName,
+      Role: user.role,
+    }));
+
+    const csvContent = [
+      ['Username', 'Company', 'Role'],
+      ...csvData.map(item => [item.Username, item.Company, item.Role])
+    ]
+      .map(e => e.join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "users.csv";
+    link.click();
+  };
+
+  const filteredUsers = users.filter(user => user.username.toLowerCase().includes(searchTerm.toLowerCase()));
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -105,12 +140,26 @@ const UserManagement = () => {
   return (
     <div className="admin-dashboard d-flex">
       <AdminSidebar />
-      <div className="main-content flex-grow-1 p-3">
+      <div className="user-content flex-grow-1 p-3">
         <Topbar />
         <div className="content-wrapper p-3">
           <div className="user-management container">
             <h2>User Management</h2>
-            {users.length === 0 ? (
+            <div className="toolbar d-flex justify-content-end align-items-center mb-3">
+              <div className="searchbar d-flex align-items-center me-3">
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Search" 
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+                <FaSearch className="ms-2" />
+              </div>
+              <button className="btn btn-primary me-2" onClick={handleAddClick}><FaPlus /> Add</button>
+              <button className="btn btn-secondary" onClick={handleDownloadClick}><FaDownload /> Download</button>
+            </div>
+            {filteredUsers.length === 0 ? (
               <p>No users available</p>
             ) : (
               <div className="table-responsive">
@@ -124,7 +173,7 @@ const UserManagement = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {users.map(user => (
+                    {filteredUsers.map(user => (
                       <tr key={user.username}>
                         <td>{user.username}</td>
                         <td>{user.companyName}</td>
@@ -147,6 +196,11 @@ const UserManagement = () => {
           user={selectedUser}
           onClose={() => setShowEditForm(false)}
           onSave={handleEditSave}
+        />
+      )}
+      {showAddForm && (
+        <AddUserForm
+          onClose={() => setShowAddForm(false)}
         />
       )}
     </div>

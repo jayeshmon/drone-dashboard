@@ -7,50 +7,85 @@ import Topbar from './Topbar';
 import AdminSidebar from './AdminSidebar';
 import Sidebar from './Sidebar';
 import Swal from 'sweetalert2';
+import { FaPlus, FaDownload, FaSearch } from 'react-icons/fa';
 
 const Drones = () => {
   const [showAddPopup, setShowAddPopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [dronesData, setDronesData] = useState([]);
+  const [users, setUsers] = useState({});
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [filter, setFilter] = useState('');
   const [selectedDrone, setSelectedDrone] = useState(null);
 
   useEffect(() => {
     fetchDrones();
+    fetchUsers(); // Fetch users on component mount
   }, []);
+
   const user = JSON.parse(localStorage.getItem('user'));
+
   const fetchDrones = async () => {
     try {
-       //dronesdata/:username
-       let response ="";
-       if(user.role=="admin"){
-       response = await fetch(`${process.env.REACT_APP_API_URL}/alldronesdata`);
-    }else{
-      response = await fetch(`${process.env.REACT_APP_API_URL}/dronesdata/${user.username}`);
+      let response = "";
+      if (user.role === "admin") {
+        response = await fetch(`${process.env.REACT_APP_API_URL}/alldronesdata`);
+      } else {
+        response = await fetch(`${process.env.REACT_APP_API_URL}/dronesdata/${user.username}`);
+      }
 
-    }
       if (!response.ok) {
         Swal.fire('Failed', `Failed to fetch drones: ${response.statusText}`, 'error');
         throw new Error(`Failed to fetch drones: ${response.statusText}`);
       }
+
       const data = await response.json();
-      console.log(data);
       const formattedData = data.map(drone => ({
         ...drone,
-        soc: drone.latestData?.MV || 'N/A' // Set 'N/A' if MV is not available
+        soc: drone.latestData?.MV || 'N/A',
+        assignedUser: drone.assignedUser ? users[drone.assignedUser] || 'Not Assigned' : 'Not Assigned'
       }));
       setDronesData(formattedData);
+      console.log('Drones Data:', formattedData); // Debug log
     } catch (error) {
       console.error(error.message);
       Swal.fire('Error', `Failed to fetch drones: ${error.message}`, 'error');
     }
   };
 
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch users: ${response.statusText}`);
+      }
+
+      const usersData = await response.json();
+      const usersMap = usersData.reduce((map, user) => {
+        map[user._id] = user.username; // Assuming user data has _id and username fields
+        return map;
+      }, {});
+
+      setUsers(usersMap);
+    } catch (error) {
+      console.error(error.message);
+      Swal.fire('Error', `Failed to fetch users: ${error.message}`, 'error');
+    }
+  };
+
   const addDrone = async (drone) => {
     try {
-     
-      const response = await fetch('https://dashboard.fuselage.co.in:3003.co.in:3003/drones', {
+      // Remove assignedUser field if it is empty
+      if (!drone.assignedUser) {
+        delete drone.assignedUser;
+      }
+
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/drones`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,11 +93,14 @@ const Drones = () => {
         },
         body: JSON.stringify(drone)
       });
+
       if (!response.ok) {
-        Swal.fire('Failed', `Failed to add drone: ${response.statusText}`, 'error');
-        throw new Error(`Failed to add drone: ${response.statusText}`);
+        const responseBody = await response.text();
+        Swal.fire('Failed', `Failed to add drone: ${responseBody}`, 'error');
+        throw new Error(`Failed to add drone: ${responseBody}`);
       }
-      fetchDrones(); // Refresh the drones list
+
+      fetchDrones();
     } catch (error) {
       console.error(error.message);
       Swal.fire('Error', `Failed to add drone: ${error.message}`, 'error');
@@ -79,11 +117,19 @@ const Drones = () => {
         },
         body: JSON.stringify(updatedDrone)
       });
+
       if (!response.ok) {
-        Swal.fire('Failed', `Failed to update drone: ${response.statusText}`, 'error');
-        throw new Error(`Failed to update drone: ${response.statusText}`);
+        const responseBody = await response.text();
+        Swal.fire('Failed', `Failed to update drone: ${responseBody}`, 'error');
+        throw new Error(`Failed to update drone: ${responseBody}`);
       }
-      fetchDrones(); // Refresh the drones list
+
+      const updatedData = await response.json();
+      setDronesData(prevDrones => 
+        prevDrones.map(drone => 
+          drone._id === id ? { ...drone, ...updatedDrone, assignedUser: users[updatedDrone.assignedUser] } : drone
+        )
+      );
     } catch (error) {
       console.error(error.message);
       Swal.fire('Error', `Failed to update drone: ${error.message}`, 'error');
@@ -98,11 +144,14 @@ const Drones = () => {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
+
       if (!response.ok) {
-        Swal.fire('Failed', `Failed to delete drone: ${response.statusText}`, 'error');
-        throw new Error(`Failed to delete drone: ${response.statusText}`);
+        const responseBody = await response.text();
+        Swal.fire('Failed', `Failed to delete drone: ${responseBody}`, 'error');
+        throw new Error(`Failed to delete drone: ${responseBody}`);
       }
-      fetchDrones(); // Refresh the drones list
+
+      fetchDrones();
     } catch (error) {
       console.error(error.message);
       Swal.fire('Error', `Failed to delete drone: ${error.message}`, 'error');
@@ -125,13 +174,19 @@ const Drones = () => {
     return sortableDrones;
   }, [dronesData, sortConfig]);
 
-  const filteredDrones = sortedDrones.filter(drone =>
-    drone.imei.includes(filter) ||
-    drone.name.toLowerCase().includes(filter.toLowerCase()) ||
-    drone.model.toLowerCase().includes(filter.toLowerCase()) ||
-    drone.soc.toString().includes(filter) ||
-    drone.status.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filteredDrones = sortedDrones.filter(drone => {
+    const searchTermLower = filter.toLowerCase();
+
+    const imeiMatch = String(drone.imei).toLowerCase().includes(searchTermLower);
+    const nameMatch = String(drone.drone_name).toLowerCase().includes(searchTermLower);
+    const modelMatch = String(drone.model).toLowerCase().includes(searchTermLower);
+    const socMatch = String(drone.soc).toLowerCase().includes(searchTermLower);
+    const statusMatch = String(drone.status).toLowerCase().includes(searchTermLower);
+    const rangeMatch = String(drone.range).toLowerCase().includes(searchTermLower);
+    const assignedUserMatch = String(drone.assignedUser || '').toLowerCase().includes(searchTermLower);
+
+    return imeiMatch || nameMatch || modelMatch || socMatch || statusMatch || rangeMatch || assignedUserMatch;
+  });
 
   const requestSort = key => {
     let direction = 'ascending';
@@ -156,17 +211,41 @@ const Drones = () => {
       Papa.parse(file, {
         header: true,
         complete: results => {
-          const newDrones = results.data.map((row, index) => ({
-            imei: row['IMEI'],
-            name: row['Drone Name'],
-            model: row['Model / ID'],
-            soc: row['SOC % (Charge)'], // Assuming SOC % (Charge) from CSV
-            status: row['Status'].toLowerCase(),
+          const newDrones = results.data.map(row => ({
+            imei: row['IMEI'] || '', // Handle undefined values
+            drone_name: row['Drone Name'] || '',
+            model: row['Model / ID'] || '',
+            soc: row['SOC % (Charge)'] || 'N/A',
+            range: row['Range (km)'] || '', // Add range field
+            assignedUser: '' // Leave assignedUser empty, will be edited later
           }));
-          newDrones.forEach(drone => addDrone(drone));
+
+          newDrones.forEach(drone => {
+            if (drone.imei && drone.drone_name && drone.model) { // Basic validation to ensure required fields are present
+              addDrone(drone);
+            } else {
+              console.warn("Invalid drone data:", drone); // Log invalid data for debugging
+            }
+          });
         },
       });
     }
+  };
+
+  const handleDownloadSampleFile = () => {
+    const sampleData = [
+      ['IMEI', 'Drone Name', 'Model / ID', 'SOC % (Charge)', 'Range (km)', 'Status'],
+      [123456789012345, 'Drone A', 'Model X', 100, 20, 'Active'], // IMEI as number
+      [987654321098765, 'Drone B', 'Model Y', 75, 15, 'Inactive'], // IMEI as number
+    ];
+
+    const csvContent = sampleData.map(e => e.join(",")).join("\n");
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "drone_sample.csv";
+    link.click();
   };
 
   const handleDelete = (imei) => {
@@ -181,6 +260,31 @@ const Drones = () => {
     toggleEditPopup(drone);
   };
 
+  const handleDownloadClick = () => {
+    const csvData = dronesData.map(drone => ({
+      IMEI: drone.imei,
+      Name: drone.drone_name,
+      Model: drone.model,
+      SOC: drone.soc,
+      Range: drone.range,
+      Status: drone.status,
+      AssignedUser: drone.assignedUser || ''
+    }));
+
+    const csvContent = [
+      ['IMEI', 'Name', 'Model', 'SOC', 'Range', 'Status', 'AssignedUser'],
+      ...csvData.map(item => [item.IMEI, item.Name, item.Model, item.SOC, item.Range, item.Status, item.AssignedUser])
+    ]
+      .map(e => e.join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "drones.csv";
+    link.click();
+  };
+
   return (
     <div className="drone-admin-dashboard">
       {user && user.role === 'admin' ? <AdminSidebar /> : <Sidebar />}
@@ -190,30 +294,56 @@ const Drones = () => {
           <div className="drone-drones-header">
             <h2>Manage Drones</h2>
             <div className="drone-search-bar">
-              <i className="fas fa-download"></i>
-              <input type="text" placeholder="Search" value={filter} onChange={e => setFilter(e.target.value)} />
-              <i className="fas fa-plus" onClick={toggleAddPopup}></i>
+              <input
+                type="text"
+                placeholder="Search"
+                value={filter}
+                onChange={e => setFilter(e.target.value)}
+              />
+              <FaSearch />
+              <button className="btn btn-primary" onClick={toggleAddPopup}>
+                <FaPlus /> Add
+              </button>
+              <button className="btn btn-secondary" onClick={handleDownloadClick}>
+                <FaDownload /> Download
+              </button>
+              <button className="btn btn-secondary" onClick={handleDownloadSampleFile}>
+                Download Sample File
+              </button>
+              <label className="btn btn-secondary">
+                Upload Drones
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleFileUpload}
+                  style={{ display: 'none' }}
+                />
+              </label>
             </div>
           </div>
           <table className="drone-drones-table">
             <thead>
               <tr>
                 <th onClick={() => requestSort('imei')}>IMEI</th>
-                <th onClick={() => requestSort('name')}>Drone Name</th>
+                <th onClick={() => requestSort('drone_name')}>Drone Name</th>
                 <th onClick={() => requestSort('model')}>Model / ID</th>
                 <th onClick={() => requestSort('soc')}>SOC % (Charge)</th>
+                <th onClick={() => requestSort('range')}>Range (km)</th>
                 <th onClick={() => requestSort('status')}>Status</th>
+                <th onClick={() => requestSort('assignedUser')}>Assigned User</th>
                 {user && user.role === 'admin' ? (
-                <th>Actions</th>):("")}
+                  <th>Actions</th>
+                ) : null}
               </tr>
             </thead>
             <tbody>
               {filteredDrones.map((drone, index) => (
                 <tr key={index}>
                   <td>{drone.imei}</td>
-                  <td>{drone.name}</td>
+                  <td>{drone.drone_name}</td>
                   <td>{drone.model}</td>
                   <td>{drone.soc}</td>
+                  <td>{drone.range}</td>
                   <td>
                     {drone.latestData?.p === 1 ? (
                       <span className="drone-status drone-green"></span>
@@ -222,19 +352,27 @@ const Drones = () => {
                     )}
                     {drone.status}
                   </td>
+                  <td>{drone.assignedUser || 'Not Assigned'}</td>
                   {user && user.role === 'admin' ? (
-                  <td>
-                    
-                    <button className="drone-edit-btn" onClick={() => handleEdit(drone)}>Edit</button>
-                    <button className="drone-delete-btn" onClick={() => handleDelete(drone.imei)}>Delete</button>
-                   
-                  </td>
-                   ): ("") }
+                    <td>
+                      <button
+                        className="drone-edit-btn"
+                        onClick={() => handleEdit(drone)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="drone-delete-btn"
+                        onClick={() => handleDelete(drone.imei)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  ) : null}
                 </tr>
               ))}
             </tbody>
           </table>
-          <input type="file" accept=".csv" onChange={handleFileUpload} />
           {showAddPopup && <AddDronePopup onClose={toggleAddPopup} onSave={fetchDrones} />}
           {showEditPopup && selectedDrone && (
             <EditDronePopup onClose={toggleEditPopup} onSave={fetchDrones} drone={selectedDrone} />
@@ -246,3 +384,6 @@ const Drones = () => {
 };
 
 export default Drones;
+
+
+

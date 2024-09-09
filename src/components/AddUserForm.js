@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './AddUserForm.css';
 import Swal from 'sweetalert2';
+
 const AddUserForm = ({ onClose, onSave }) => {
   const [companyName, setCompanyName] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -13,7 +14,7 @@ const AddUserForm = ({ onClose, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newUser = { companyName,firstName, lastName, mobile, username, password, role, assignedDevice };
+    const newUser = { companyName, firstName, lastName, mobile, username, password, role, assignedDevice };
 
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
@@ -27,19 +28,16 @@ const AddUserForm = ({ onClose, onSave }) => {
       if (response.ok) {
         const data = await response.json();
         console.log('User registered:', data);
-        Swal.fire('Success' ,`User Added Successfully:  `, 'Success');
-       // onSave(newUser);
-       
+        Swal.fire('Success', `User Added Successfully:  `, 'success');
+        if (onSave) onSave(newUser);  // Ensure onSave is defined before calling it
       } else {
         const error = await response.text();
         console.error('Error registering user:', error);
-        
-        Swal.fire('error' ,`Error Registering User: ${error} `, 'error');
+        Swal.fire('Error', `Error Registering User: ${error} `, 'error');
       }
     } catch (err) {
       console.error('Error registering user:', err.message);
-   
-      Swal.fire('error' ,`Error Registering User ${err.message} `, 'error');
+      Swal.fire('Error', `Error Registering User ${err.message} `, 'error');
     }
 
     onClose();
@@ -50,11 +48,10 @@ const AddUserForm = ({ onClose, onSave }) => {
       <div className="aumodal-content">
         <h2>Add User</h2>
         <form onSubmit={handleSubmit}>
-        <label>
+          <label>
             Company Name:
             <input type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
           </label>
-        
           <label>
             First Name:
             <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
@@ -87,8 +84,8 @@ const AddUserForm = ({ onClose, onSave }) => {
             <button type="submit">Submit</button>
             <button type="button" onClick={onClose}>Cancel</button>
             <button type="button" onClick={() => {
-              setFirstName('');
               setCompanyName('');
+              setFirstName('');
               setLastName('');
               setMobile('');
               setEmail('');

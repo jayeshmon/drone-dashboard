@@ -1,8 +1,6 @@
 /* components/Login.css */
 
-
-
-.login-container {
+.login-page-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,59 +8,61 @@
   background: url('/public/images/C2066T02-1.jpg') no-repeat center center/cover;
 }
 
-.login-form {
+.login-page-form {
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 400px;
   padding: 30px;
   border-radius: 20px;
-  background: rgba(206, 204, 204, 0.7); /* Dark transparent background */
-  color: #343232; /* White font color */
-  box-shadow: 0 0 20px rgba(183, 230, 182, 0.5);
-  animation: fadeIn 1s ease-in-out;
+  background: rgba(255, 255, 255, 0.2); /* Light glass effect */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); /* Stronger shadow for a floating effect */
+  backdrop-filter: blur(10px); /* Blur for frosted glass effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.18); /* Soft border */
+  animation: login-page-fadeIn 1s ease-in-out;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.login-form:hover {
+.login-page-form:hover {
   transform: translateY(-10px);
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
 }
 
-.login-form h2 {
+.login-page-form h2 {
   margin-bottom: 20px;
   color: #fff;
   text-align: center;
 }
 
-.login-form label {
+.login-page-form label {
   margin-bottom: 10px;
   font-weight: bold;
   color: #0c0c0c;
 }
 
-.login-form input {
+.login-page-form input {
   margin-bottom: 20px;
   padding: 12px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
-  background: rgba(10, 10, 10, 0.1);
-  color: #3c3c3c;
-  transition: border-color 0.3s;
+  background: rgba(255, 255, 255, 0.3); /* Softer background */
+  color: #333; /* Slightly darker text */
+  transition: background 0.3s, border-color 0.3s;
 }
 
-.login-form input::placeholder {
-  color: #2f2f2f;
+.login-page-form input::placeholder {
+  color: #aaa;
 }
 
-.login-form input:focus {
+.login-page-form input:focus {
   border-color: #4caf50;
   outline: none;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.5); /* Lighter on focus */
 }
 
-.login-form button {
+.login-page-btn {
   padding: 12px;
   font-size: 16px;
   background: linear-gradient(45deg, #6a11cb, #2575fc);
@@ -73,43 +73,43 @@
   transition: background-color 0.3s;
 }
 
-.login-form button:hover {
+.login-page-btn:hover {
   background: linear-gradient(45deg, #2575fc, #6a11cb);
 }
 
-.login-form .form-group {
+.login-page-form-group {
   position: relative;
 }
 
-.login-form .form-group i {
+.login-page-form-group i {
   position: absolute;
   top: 50%;
   left: 10px;
   transform: translateY(-50%);
-  color: #2d2c2c;
+  color: #333;
 }
 
-.login-form .form-group input {
+.login-page-form-group input {
   padding-left: 35px;
 }
 
-.login-form .remember-me {
+.login-page-remember-me {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
 }
 
-.login-form .remember-me label {
+.login-page-remember-me label {
   display: flex;
   align-items: center;
 }
 
-.login-form .remember-me input {
+.login-page-remember-me input {
   margin-right: 5px;
 }
 
-@keyframes fadeIn {
+@keyframes login-page-fadeIn {
   from {
     opacity: 0;
   }

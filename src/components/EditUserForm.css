@@ -1,21 +1,79 @@
+/* EditUserForm.css */
+
 .eumodal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .eumodal-content {
-  background-color: white;
+  background: #ffffff;
   padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.eumodal-content h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+}
+
+.eumodal-content label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #555;
+}
+
+.eumodal-content input[type="text"],
+.eumodal-content input[type="password"],
+.eumodal-content select {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  width: 400px;
-  max-width: 100%;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.eumodal-content input[type="text"]:focus,
+.eumodal-content input[type="password"]:focus,
+.eumodal-content select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.eumodal-content select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="%23666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>') no-repeat right 10px center;
+  background-size: 12px 12px;
 }
 
 .eumodal-actions {
@@ -26,4 +84,53 @@
 
 .eumodal-actions button {
   padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.eumodal-actions button:hover {
+  opacity: 0.9;
+}
+
+.eumodal-actions button:first-of-type {
+  background-color: #007bff;
+  color: white;
+}
+
+.eumodal-actions button:first-of-type:hover {
+  background-color: #0056b3;
+}
+
+.eumodal-actions button:last-of-type {
+  background-color: #f0f0f0;
+  color: #555;
+}
+
+.eumodal-actions button:last-of-type:hover {
+  background-color: #dcdcdc;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .eumodal-content {
+    padding: 15px;
+  }
+
+  .eumodal-content h2 {
+    font-size: 20px;
+  }
+
+  .eumodal-content input[type="text"],
+  .eumodal-content input[type="password"],
+  .eumodal-content select {
+    font-size: 14px;
+  }
+
+  .eumodal-actions button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
 }

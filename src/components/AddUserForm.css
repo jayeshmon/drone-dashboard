@@ -1,58 +1,78 @@
 .aumodal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+.aumodal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transform: scale(0.9);
+  animation: scaleUp 0.3s forwards;
+}
+
+.aumodal-content h2 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.aumodal-content label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.aumodal-content input,
+.aumodal-content select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.aumodal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.aumodal-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.aumodal-actions button:first-child {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.aumodal-actions button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
   }
-  
-  .aumodal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 500px;
+}
+
+@keyframes scaleUp {
+  to {
+    transform: scale(1);
   }
-  
-  .aumodal-content h2 {
-    margin-top: 0;
-  }
-  
-  .aumodal-content label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  .aumodal-content input,
-  .aumodal-content select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-  }
-  
-  .aumodal-actions {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .aumodal-actions button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .aumodal-actions button:first-child {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  .aumodal-actions button:last-child {
-    background-color: #f44336;
-    color: white;
-  }
-  
+}

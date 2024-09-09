@@ -7,14 +7,13 @@ import MapComponent from './MapComponent';
 
 const RealtimeTracking = () => {
   const [dronesData, setDronesData] = useState([]);
+  const [filteredDronesData, setFilteredDronesData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('All');
   const [selectedDrone, setSelectedDrone] = useState(null);
-  const [lat, setLat] = useState(0);
-    const [lng, setLng] = useState(0);
-    const [zoom, setZoom] = useState(10);
   const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
-    
     const endpoint =
       user && user.role === 'admin'
         ? `${process.env.REACT_APP_API_URL}/alldronesdata`
@@ -22,21 +21,33 @@ const RealtimeTracking = () => {
 
     fetch(endpoint)
       .then(response => response.json())
-      .then(data => setDronesData(data))
+      .then(data => {
+        setDronesData(data);
+        setFilteredDronesData(data);
+      })
       .catch(error => console.error('Error fetching drone data:', error));
   }, [user]);
 
-  const viewMap = (drone) => {
-  
-    const droneLat = parseFloat(drone.latestData.l);
-    const droneLng = parseFloat(drone.latestData.g);
-    setLat(droneLat);
-    setLng(droneLng);
-    setZoom(25)
-   
-      
+  useEffect(() => {
+    let filteredData = dronesData;
 
-    
+    if (filterStatus !== 'All') {
+      const isActive = filterStatus === 'Active';
+      filteredData = filteredData.filter(drone => drone.latestData.p === (isActive ? 1 : 0));
+    }
+
+    if (searchTerm) {
+      filteredData = filteredData.filter(drone =>
+        drone.drone_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        drone.imei.includes(searchTerm)
+      );
+    }
+
+    setFilteredDronesData(filteredData);
+  }, [searchTerm, filterStatus, dronesData]);
+
+  const viewMap = (drone) => {
+    setSelectedDrone(drone);
   };
 
   return (
@@ -45,25 +56,39 @@ const RealtimeTracking = () => {
 
       <div className="main-content">
         <div className="map-container">
-          <MapComponent 
-            lat={lat} 
-            lng={lng} 
-            zoom={zoom} 
-          />
+          {selectedDrone ? (
+            <MapComponent
+              lat={parseFloat(selectedDrone.latestData.l)}
+              lng={parseFloat(selectedDrone.latestData.g)}
+              zoom={25}
+              drone={selectedDrone}
+            />
+          ) : (
+            <p>Select a drone to view its location on the map</p>
+          )}
         </div>
         <div className="drone-status-table">
           <div className="table-header">
             <div className="table-actions">
-              <button className="download-btn"><i className="fas fa-download"></i></button>
-              <input type="text" placeholder="Search" className="search-input" />
-              <select className="filter-select">
+              <input
+                type="text"
+                placeholder="Search by Drone Name or IMEI"
+                className="search-input"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <select
+                className="filter-select"
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+              >
                 <option value="All">All</option>
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
               </select>
             </div>
           </div>
-          <table>
+          <table className="styled-table">
             <thead>
               <tr>
                 <th>Sl No</th>
@@ -75,8 +100,8 @@ const RealtimeTracking = () => {
               </tr>
             </thead>
             <tbody>
-              {dronesData.map((drone, index) => (
-                <tr key={drone.id}> {/* Ensure each row has a unique key */}
+              {filteredDronesData.map((drone, index) => (
+                <tr key={drone.id}>
                   <td>{index + 1}</td>
                   <td>{drone.imei}</td>
                   <td>{drone.drone_name}</td>

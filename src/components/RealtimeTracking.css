@@ -22,7 +22,7 @@
 
 .table-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-bottom: 20px;
 }
 
@@ -31,63 +31,89 @@
   align-items: center;
 }
 
-.download-btn {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
 .search-input {
-  padding: 5px;
+  padding: 8px 12px;
   font-size: 16px;
   border-radius: 5px;
   border: 1px solid #ddd;
   margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
 .filter-select {
-  padding: 5px;
+  padding: 8px 12px;
   font-size: 16px;
   border-radius: 5px;
   border: 1px solid #ddd;
+  transition: all 0.3s ease;
 }
 
-table {
+.filter-select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.styled-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 10px;
 }
 
-th, td {
-  padding: 10px;
+.styled-table th, .styled-table td {
+  padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
-th {
-  background-color: #1a1a2e;
+.styled-table th {
+  background-color: #000;
   color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.styled-table td {
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.styled-table tr:nth-child(even) td {
+  background-color: #e6e6e6;
+}
+
+.styled-table tr:hover td {
+  background-color: #d4d4d4;
 }
 
 .status {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.status span {
   display: inline-block;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  margin-right: 5px;
+  margin-right: 8px;
 }
 
-.status.active {
+.status.active span {
   background-color: green;
 }
 
-.status.inactive {
+.status.inactive span {
   background-color: red;
 }
 
 .view-map-btn, .detailed-view-btn {
-  padding: 5px 10px;
+  padding: 8px 12px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -106,10 +132,37 @@ th {
 }
 
 .view-map-btn:hover, .detailed-view-btn:hover {
-  transform: scale(1.1);
-  background-color: #0056b3; /* Darker blue for hover effect */
+  transform: scale(1.05);
+  background-color: #0056b3;
 }
 
 .view-map-btn:active, .detailed-view-btn:active {
-  transform: scale(0.9);
+  transform: scale(0.95);
+}
+
+.edit-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background-color: #45a049;
+}
+
+.delete-btn:hover {
+  background-color: #e53935;
 }
