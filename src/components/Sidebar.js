@@ -1,8 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+const handleLogout = () => {
+  // Clear the token (or any other authentication data)
+  localStorage.removeItem('token'); // Remove the token from localStorage (or any other storage)
+  localStorage.removeItem('user'); 
+  localStorage.removeItem('droneData');
+  localStorage.removeItem('droneData2');  
+  localStorage.removeItem('droneLocations'); 
+  
+  // Optionally, you can clear other user-related data here
+
+  // Redirect the user to the login page
+  navigate('/login');
+};
+
   return (
     <div className="sidebar collapsed">
       <div className="sidebar-content">
@@ -25,6 +41,13 @@ const Sidebar = () => {
               <span className="tooltip">Realtime Tracking</span>
             </Link>
           </li>
+          <li>
+            <Link to="/login" onClick={handleLogout}>
+              <i className="fas fa-sign-out-alt"></i>
+              <span className="admintooltip">Logout</span>
+            </Link>
+          </li>
+
         </ul>
       </div>
       <div className="sidebar-footer">
