@@ -7,6 +7,7 @@ import FlightIcon from '@mui/icons-material/Flight';
 import MapIcon from '@mui/icons-material/Map';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Swal from 'sweetalert2';
+
 // Define default values
 const getDroneDataFromLocalStorage = () => JSON.parse(localStorage.getItem('droneData')) || [];
 
@@ -15,6 +16,7 @@ const TilesComponent = ({ onTileClick }) => {
   const [activeDrones, setActiveDrones] = useState(0);
   const [inactiveDrones, setInactiveDrones] = useState(0);
   const [flyingDrones, setFlyingDrones] = useState(0);
+  const [totalAreaCovered, setTotalAreaCovered] = useState('0 sq km'); // State for total area covered
 
   const updateData = () => {
     const droneData = getDroneDataFromLocalStorage();
@@ -29,30 +31,42 @@ const TilesComponent = ({ onTileClick }) => {
     setFlyingDrones(flying);
   };
 
+  const fetchTotalAreaCovered = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/trip`);
+      const data = await response.json();
+      const totalKmCovered = data.totalKmCovered || 0;
+      setTotalAreaCovered(`${totalKmCovered} Acres`);
+    } catch (error) {
+      console.error('Error fetching total area covered:', error);
+    }
+  };
+
   useEffect(() => {
     // Initial data fetch
-    
     updateData();
+    fetchTotalAreaCovered(); // Fetch the total area covered from the API
 
     // Set interval to update data every 10 seconds
-    const intervalId = setInterval(updateData, 10000);
+    const intervalId = setInterval(() => {
+      updateData();
+      fetchTotalAreaCovered();
+    }, 10000);
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
   const handleClick = (type) => {
-   
-    if(type!==undefined){
-   localStorage.setItem("type",type);
-   Swal.fire({
-    title: 'Changed!',
-    text: "Data changed to "+type+" drones",
-    icon: 'success',
-    confirmButtonText: 'OK',
-  });
+    if (type !== undefined) {
+      localStorage.setItem('type', type);
+      Swal.fire({
+        title: 'Changed!',
+        text: 'Data changed to ' + type + ' drones',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      });
     }
-    
   };
 
   const data = [
@@ -60,7 +74,7 @@ const TilesComponent = ({ onTileClick }) => {
     { title: 'No of Active Drones', value: activeDrones, icon: <CheckCircleIcon />, color: '#2196f3', type: 'active' },
     { title: 'No of Inactive Drones', value: inactiveDrones, icon: <HighlightOffIcon />, color: '#f44336', type: 'inactive' },
     { title: 'No of Drones Flying', value: flyingDrones, icon: <FlightIcon />, color: '#ff9800', type: 'flying' },
-    { title: 'Total Area Covered', value: '0 sq km', icon: <MapIcon />, color: '#9c27b0' },
+    { title: 'Total Area Covered', value: totalAreaCovered, icon: <MapIcon />, color: '#9c27b0' },
     { title: 'Total Hours', value: '0 hrs', icon: <AccessTimeIcon />, color: '#3f51b5' },
   ];
 

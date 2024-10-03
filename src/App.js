@@ -55,7 +55,7 @@ const App = () => {
           </Routes>
         </div>
       </AuthProvider>
-      <LoadScript googleMapsApiKey="AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk" />
+      <LoadScript googleMapsApiKey="AIzaSyAfErcpGphOx5DHQTMsH9lsF-BxVgny78U" />
     </Router>
   );
 };

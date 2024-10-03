@@ -10,17 +10,23 @@ import Swal from 'sweetalert2';
 import { FaPlus, FaDownload, FaSearch } from 'react-icons/fa';
 
 const Drones = () => {
+  
   const [showAddPopup, setShowAddPopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [dronesData, setDronesData] = useState([]);
-  const [users, setUsers] = useState({});
+  const [users, setUsers] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [filter, setFilter] = useState('');
   const [selectedDrone, setSelectedDrone] = useState(null);
 
   useEffect(() => {
-    fetchDrones();
-    fetchUsers(); // Fetch users on component mount
+    fetchUsers();
+
+ 
+      fetchDrones();
+  
+      
+
   }, []);
 
   const user = JSON.parse(localStorage.getItem('user'));
@@ -40,11 +46,14 @@ const Drones = () => {
       }
 
       const data = await response.json();
+  
       const formattedData = data.map(drone => ({
         ...drone,
         soc: drone.latestData?.MV || 'N/A',
-        assignedUser: drone.assignedUser ? users[drone.assignedUser] || 'Not Assigned' : 'Not Assigned'
-      }));
+        assignedUser: drone.assignedUser ? users[drone.assignedUser] : 'Not Assigned'
+      }
+      ));
+      
       setDronesData(formattedData);
       console.log('Drones Data:', formattedData); // Debug log
     } catch (error) {
@@ -54,6 +63,7 @@ const Drones = () => {
   };
 
   const fetchUsers = async () => {
+    
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
         headers: {
@@ -66,8 +76,9 @@ const Drones = () => {
       }
 
       const usersData = await response.json();
+     
       const usersMap = usersData.reduce((map, user) => {
-        map[user._id] = user.username; // Assuming user data has _id and username fields
+        map[user._id] = user.companyName; // Assuming user data has _id and username fields
         return map;
       }, {});
 
@@ -76,6 +87,7 @@ const Drones = () => {
       console.error(error.message);
       Swal.fire('Error', `Failed to fetch users: ${error.message}`, 'error');
     }
+    
   };
 
   const addDrone = async (drone) => {
@@ -286,6 +298,7 @@ const Drones = () => {
   };
 
   return (
+    
     <div className="drone-admin-dashboard">
       {user && user.role === 'admin' ? <AdminSidebar /> : <Sidebar />}
       <div className="drone-main-content">
