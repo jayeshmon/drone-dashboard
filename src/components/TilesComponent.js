@@ -35,6 +35,7 @@ const TilesComponent = ({ onTileClick }) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/trip`);
       const data = await response.json();
+      console.log(data);
       const totalKmCovered = data.totalKmCovered || 0;
       setTotalAreaCovered(`${totalKmCovered} Acres`);
     } catch (error) {
