@@ -33,7 +33,7 @@ const AdminSidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/admin/logout">
+            <Link to="/login">
               <i className="fas fa-sign-out-alt"></i>
               <span className="admintooltip">Logout</span>
             </Link>

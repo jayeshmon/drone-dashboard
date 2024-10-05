@@ -59,10 +59,14 @@ const DroneDetails = () => {
         if (!response.ok) {
           throw new Error('Failed to fetch total area covered');
         }
+        
         return response.json();
       })
       .then(data => {
         console.log('Total area covered data:', data); // Debug response from total area covered API
+        console.log("************")
+        console.log(data)
+        console.log("************")
         if (data.kmCovered) {
           setTotalArea(data.kmCovered); // Set total area covered state
         } else {
@@ -126,7 +130,7 @@ const DroneDetails = () => {
         <div className="card location">
           <LocationOnIcon className="card-icon" />
           <h3>Location</h3>
-          <p>Latitude: {drone.latestData.l} Longitude: {drone.latestData.g}</p>
+          <p>Latitude: {drone.latestData.l.split(',')[drone.latestData.l.split(',').length-1]} Longitude: {drone.latestData.g.split(',')[drone.latestData.g.split(',').length-1]}</p>
         </div>
         <div className="card trip">
           <RoadIcon className="card-icon" />

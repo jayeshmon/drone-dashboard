@@ -39,6 +39,7 @@ const ProtectedRoute = ({ element, roles, ...rest }) => {
 const App = () => {
   return (
     <Router>
+       <LoadScript googleMapsApiKey="AIzaSyB3QD1WkGnTJRqK58B6E8bS1LghrfmmzfA" >
       <AuthProvider>
         <div className="app">
           <Routes>
@@ -51,11 +52,11 @@ const App = () => {
             <Route path="/admin/drones" element={<ProtectedRoute element={<Drones />} roles={['admin']} />} />
             <Route path="/RealtimeTracking" element={<ProtectedRoute element={<RealtimeTracking />} roles={['admin']} />} />
             <Route path="/drone-details/*" element={<DroneDetails />} />
-            <Route path="/" element={<Navigate to="/dashboard" />} />
+            <Route path="/" element={<Navigate to="/login" />} />
           </Routes>
         </div>
       </AuthProvider>
-      <LoadScript googleMapsApiKey="AIzaSyD2pv1cMfEPmW9AtnWXRSoGypKA7orXifE" />
+     </LoadScript>
     </Router>
   );
 };

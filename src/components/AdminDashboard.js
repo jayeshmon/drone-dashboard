@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLoadScript } from '@react-google-maps/api';
+import { LoadScript, Marker } from '@react-google-maps/api';
 import AddUserForm from './AddUserForm';
 import AddDronePopup from './AddDronePopup';
 import TilesComponent from './TilesComponent';
@@ -48,28 +48,21 @@ const AdminDashboard = ({ onAddUser, onAddDevice }) => {
     setShowAddDeviceForm(false);
   };
 
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyDZXY8oBBXr0QqKgGH4TBzqM019b8lQXpk",
-    libraries,
-  });
+ 
 
-  if (loadError) {
-    return <div>Error loading maps</div>;
-  }
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="admin-dashboard">
       <AdminSidebar />
       <div className="main-content">
-        <Topbar />
+      <Topbar />
         <div className="content-wrapper">
           <div className="row">
             <div className="col-12">
-              <MapComponent zoom={25} />
+           
+              <MapComponent />
+          
             </div>
           </div>
           <div className="row">
