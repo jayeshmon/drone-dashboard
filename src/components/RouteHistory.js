@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, Polyline, LoadScript } from '@react-google-maps/api';
 import Swal from 'sweetalert2';
 import './RouteHistory.css'; // Ensure this CSS file is present
@@ -8,12 +8,19 @@ const mapContainerStyle = {
   width: '100%',
 };
 
-const RouteHistory = () => {
+const RouteHistory = ({ imei: propsImei }) => {
   const [imei, setImei] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [mapData, setMapData] = useState([]);
   const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
+
+  // Use useEffect to set imei when props change
+  useEffect(() => {
+    if (propsImei) {
+      setImei(propsImei);
+    }
+  }, [propsImei]);
 
   const fetchData = () => {
     if (imei && startDate && endDate) {
@@ -59,7 +66,6 @@ const RouteHistory = () => {
             readOnly
             id="imei"
             value={imei}
-            onChange={(e) => setImei(e.target.value)}
           />
         </div>
         <div className="form-group">
