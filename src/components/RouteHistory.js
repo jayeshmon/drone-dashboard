@@ -27,8 +27,7 @@ const RouteHistory = () => {
         .then((data) => {
           // Validate and log the fetched data
           console.log('Fetched data:', data);
-         
-            setMapCenter({ lat: parseFloat(data[0].l), lng: parseFloat(data[0].g) });
+          setMapCenter({ lat: parseFloat(data[0].l), lng: parseFloat(data[0].g) });
           setMapData(data);
         })
         .catch((error) => {
@@ -57,7 +56,7 @@ const RouteHistory = () => {
           <label htmlFor="imei">IMEI</label>
           <input
             type="text"
-            readOnly="true"
+            readOnly
             id="imei"
             value={imei}
             onChange={(e) => setImei(e.target.value)}
@@ -87,24 +86,22 @@ const RouteHistory = () => {
       </div>
 
       <div className="map-container mt-4">
-        
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            center={mapCenter}
-            zoom={30}
-          >
-            {mapData.length > 0 && (
-              <Polyline
-                path={mapData.map((location) => ({ lat: parseFloat(location.l), lng: parseFloat(location.g) }))}
-                options={{
-                  strokeColor: '#FF0000',
-                  strokeOpacity: 1.0,
-                  strokeWeight: 2,
-                }}
-              />
-            )}
-          </GoogleMap>
-        
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={mapCenter}
+          zoom={30}
+        >
+          {mapData.length > 0 && (
+            <Polyline
+              path={mapData.map((location) => ({ lat: parseFloat(location.l), lng: parseFloat(location.g) }))}
+              options={{
+                strokeColor: '#FF0000',
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+              }}
+            />
+          )}
+        </GoogleMap>
       </div>
     </div>
   );
