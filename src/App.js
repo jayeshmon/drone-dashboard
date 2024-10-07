@@ -39,7 +39,7 @@ const ProtectedRoute = ({ element, roles, ...rest }) => {
 const App = () => {
   return (
     <Router>
-       <LoadScript googleMapsApiKey="AIzaSyB3QD1WkGnTJRqK58B6E8bS1LghrfmmzfA" >
+       <LoadScript googleMapsApiKey="AIzaSyD2pv1cMfEPmW9AtnWXRSoGypKA7orXifE" >
       <AuthProvider>
         <div className="app">
           <Routes>
