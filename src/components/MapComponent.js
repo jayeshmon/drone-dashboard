@@ -34,8 +34,8 @@ const MapComponent = ({ lat, lng, zoom, markers }) => {
 
       const droneLocations = filteredData
         .filter(drone => {
-          const lat = parseFloat(drone.latestData?.l);
-          const lng = parseFloat(drone.latestData?.g);
+          const lat = parseFloat(drone?.latestData?.l);
+          const lng = parseFloat(drone?.latestData?.g);
           return !isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0;
         })
         .map(drone => ({

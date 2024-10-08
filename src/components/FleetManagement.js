@@ -9,7 +9,7 @@ const FleetManagement = () => {
 
   return (
     <div className="fleet-management">
-      <TopNav setCurrentTab={setCurrentTab} currentTab={currentTab} />
+      
       {currentTab === 'Drones' ? <Drones /> : <Drones />}
     </div>
   );

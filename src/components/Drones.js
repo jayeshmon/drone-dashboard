@@ -169,7 +169,8 @@ const Drones = () => {
                 <th>SOC % (Charge)</th>
                 <th>Range (km)</th>
                 <th>Status</th>
-                <th>Assigned User</th>
+                
+                {user && user.role === 'admin' ? <th>Assigned User</th> : null}
                 {user && user.role === 'admin' ? <th>Actions</th> : null}
               </tr>
             </thead>
@@ -189,7 +190,7 @@ const Drones = () => {
                     )}
                     {drone.status}
                   </td>
-                  <td>{drone.assignedUser || 'Not Assigned'}</td>
+                  {user && user.role === 'admin' ? <td>{drone.assignedUser || 'Not Assigned'}</td> : null }
                   {user && user.role === 'admin' ? (
                     <td>
                       <button className="drone-edit-btn" onClick={() => handleEdit(drone)}>Edit</button>
