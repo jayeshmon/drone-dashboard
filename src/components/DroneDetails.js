@@ -9,6 +9,9 @@ import RoadIcon from '@mui/icons-material/Directions';
 import Sidebar from './Sidebar';
 import './DroneDetails.css';
 import RouteHistory from './RouteHistory';
+import AdminSidebar from './AdminSidebar';
+
+const user = JSON.parse(localStorage.getItem('user'));
 
 const DroneDetails = () => {
   const { droneId } = useParams();
@@ -102,7 +105,7 @@ const DroneDetails = () => {
 
   return (
     <div className="drone-details">
-      <Sidebar />
+       {user && user.role === 'admin' ? <AdminSidebar /> : <Sidebar />}
       <div className="details-header">
         <button className="back-button" onClick={() => navigate(-1)}>&larr; Back</button>
         <h2>{drone.drone_name} / {drone.model}</h2>
