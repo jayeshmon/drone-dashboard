@@ -71,7 +71,7 @@ const MapComponent = ({ lat, lng, zoom, markers }) => {
         renderMap();
       } catch (error) {
         console.error('Error fetching drone data:', error);
-        Swal.fire('error', 'Failed to load drone data', 'error');
+        //Swal.fire('error', 'Failed to load drone data', 'error');
       }
     };
 

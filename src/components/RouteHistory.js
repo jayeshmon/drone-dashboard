@@ -92,22 +92,36 @@ const RouteHistory = ({ imei: propsImei }) => {
       </div>
 
       <div className="map-container mt-4">
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={mapCenter}
-          zoom={30}
-        >
-          {mapData.length > 0 && (
-            <Polyline
-              path={mapData.map((location) => ({ lat: parseFloat(location.l), lng: parseFloat(location.g) }))}
-              options={{
-                strokeColor: '#FF0000',
-                strokeOpacity: 1.0,
-                strokeWeight: 2,
-              }}
-            />
-          )}
-        </GoogleMap>
+      <GoogleMap
+  mapContainerStyle={mapContainerStyle}
+  center={mapCenter}
+  zoom={30}
+>
+  {mapData.length > 0 && (
+    <Polyline
+      path={mapData
+        .map((location) => {
+          const lat = parseFloat(location.l.trim());
+          const lng = parseFloat(location.g.trim());
+
+          // Discard packets where latitude or longitude is 0 or near zero
+          if (lat === 0 || lng === 0) {
+            return null;
+          }
+
+          return { lat, lng };
+        })
+        // Filter out any null values from the map
+        .filter((location) => location !== null)}
+      options={{
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+      }}
+    />
+  )}
+</GoogleMap>
+
       </div>
     </div>
   );
