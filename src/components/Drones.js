@@ -111,10 +111,12 @@ const Drones = () => {
 
   const toggleAddPopup = () => {
     setShowAddPopup(!showAddPopup);
+    fetchDrones();
   };
 
   const toggleEditPopup = () => {
     setShowEditPopup(!showEditPopup);
+    fetchDrones();
   };
 
   const filteredDrones = dronesData.filter(drone => {

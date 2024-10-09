@@ -17,35 +17,37 @@ const UserManagement = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const token = localStorage.getItem('token');
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem('token');
 
-        if (!token) {
-          throw new Error('No token found');
-        }
-
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch users: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        setUsers(data);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        Swal.fire('Failed', err.message, 'error');
-        setLoading(false);
+      if (!token) {
+        throw new Error('No token found');
       }
-    };
 
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch users: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setUsers(data);
+      setLoading(false);
+      fetchUsers();
+    } catch (err) {
+      setError(err.message);
+      Swal.fire('Failed', err.message, 'error');
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    
     fetchUsers();
   }, []);
 

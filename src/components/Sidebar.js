@@ -50,22 +50,7 @@ const handleLogout = () => {
 
         </ul>
       </div>
-      <div className="sidebar-footer">
-        <ul>
-          <li>
-            <i className="fas fa-bell"></i>
-            <span className="tooltip">Notifications</span>
-          </li>
-          <li>
-            <i className="fas fa-cog"></i>
-            <span className="tooltip">Settings</span>
-          </li>
-          <li>
-            <i className="fas fa-user"></i>
-            <span className="tooltip">Profile</span>
-          </li>
-        </ul>
-      </div>
+  
     </div>
   );
 };

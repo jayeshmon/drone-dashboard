@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './AddDronePopup.css';
 import UserDropdown from './UserDropdown'; // Import the UserDropdown component
 import Swal from 'sweetalert2';
+import Drones from './Drones';
 
 const AddDronePopup = ({ onClose, onSave }) => {
   const [imei, setImei] = useState('');
@@ -41,8 +42,10 @@ const AddDronePopup = ({ onClose, onSave }) => {
       if (response.ok) {
         const data = await response.json();
         Swal.fire('Success', 'Drone added successfully!', 'success');
+       
         onSave(data);
         onClose();
+      
       } else {
         const error = await response.text();
         Swal.fire('Error', `Error adding drone: ${error}`, 'error');

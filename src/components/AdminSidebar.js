@@ -16,7 +16,7 @@ const AdminSidebar = () => {
           </li>
           <li>
             <Link to="/admin/drones">
-              <i className="fas fa-users-cog"></i>
+              <i className="fas fa-fan"></i>
               <span className="admintooltip">Drones</span>
             </Link>
           </li>

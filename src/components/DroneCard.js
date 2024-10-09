@@ -15,7 +15,7 @@ const DroneCard = () => {
         const data = JSON.parse(storedData);
         setDroneData(data);
       } else {
-        Swal.fire('No drone data found in local storage', '', 'warning');
+        //Swal.fire('No drone data found in local storage', '', 'warning');
       }
     } catch (err) {
       console.error('Error fetching drone data:', err.message);
