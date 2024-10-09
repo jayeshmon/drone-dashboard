@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, Polyline, LoadScript } from '@react-google-maps/api';
+import { GoogleMap, Polyline, Marker } from '@react-google-maps/api';
 import Swal from 'sweetalert2';
 import './RouteHistory.css'; // Ensure this CSS file is present
 
@@ -24,7 +24,12 @@ const RouteHistory = ({ imei: propsImei }) => {
 
   const fetchData = () => {
     if (imei && startDate && endDate) {
-      fetch(`${process.env.REACT_APP_API_URL}/dronedatabydate/${imei}/${startDate}/${endDate}`)
+      let sDate=startDate.replace("T"," ");
+      let eDate=endDate.replace("T"," ");
+
+      console.log(startDate);
+      console.log(endDate);
+      fetch(`${process.env.REACT_APP_API_URL}/dronedatabydate/${imei}/${sDate}/${eDate}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error('Failed to fetch route history');
@@ -94,31 +99,99 @@ const RouteHistory = ({ imei: propsImei }) => {
       <div className="map-container mt-4">
       <GoogleMap
   mapContainerStyle={mapContainerStyle}
-  center={mapCenter}
-  zoom={30}
+  // Set the center after discarding invalid coordinates
+  center={
+    mapData
+      .map((location) => {
+        const lat = parseFloat(location.l.trim());
+        const lng = parseFloat(location.g.trim());
+
+        // Discard packets where latitude or longitude is 0 or near zero
+        if (lat === 0 || lng === 0) {
+          return null;
+        }
+
+        return { lat, lng };
+      })
+      .filter((location) => location !== null)
+      .reduce(
+        (acc, location, _, array) => {
+          acc.lat += location.lat / array.length;
+          acc.lng += location.lng / array.length;
+          return acc;
+        },
+        { lat: 0, lng: 0 }
+      )
+  }
+  zoom={12}
 >
   {mapData.length > 0 && (
-    <Polyline
-      path={mapData
-        .map((location) => {
-          const lat = parseFloat(location.l.trim());
-          const lng = parseFloat(location.g.trim());
+    <>
+      <Polyline
+        path={mapData
+          .map((location) => {
+            const lat = parseFloat(location.l.trim());
+            const lng = parseFloat(location.g.trim());
 
-          // Discard packets where latitude or longitude is 0 or near zero
-          if (lat === 0 || lng === 0) {
-            return null;
-          }
+            // Discard packets where latitude or longitude is 0 or near zero
+            if (lat === 0 || lng === 0) {
+              return null;
+            }
 
-          return { lat, lng };
-        })
-        // Filter out any null values from the map
-        .filter((location) => location !== null)}
-      options={{
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 2,
-      }}
-    />
+            return { lat, lng };
+          })
+          // Filter out any null values from the map
+          .filter((location) => location !== null)}
+        options={{
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2,
+        }}
+      />
+
+      {/* Get valid locations */}
+      {(() => {
+        const validLocations = mapData
+          .map((location) => {
+            const lat = parseFloat(location.l.trim());
+            const lng = parseFloat(location.g.trim());
+
+            // Discard packets where latitude or longitude is 0 or near zero
+            if (lat === 0 || lng === 0) {
+              return null;
+            }
+
+            return { lat, lng };
+          })
+          .filter((location) => location !== null);
+
+        if (validLocations.length > 0) {
+          // Starting point (green marker)
+          const start = validLocations[0];
+
+          // Ending point (red marker)
+          const end = validLocations[validLocations.length - 1];
+
+          return (
+            <>
+              <Marker
+                position={start}
+                icon={{
+                  url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                }}
+              />
+              <Marker
+                position={end}
+                icon={{
+                  url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                }}
+              />
+            </>
+          );
+        }
+        return null;
+      })()}
+    </>
   )}
 </GoogleMap>
 
