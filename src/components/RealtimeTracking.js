@@ -58,8 +58,8 @@ const RealtimeTracking = () => {
         <div className="map-container">
           {selectedDrone ? (
             <MapComponent
-              lat={parseFloat(selectedDrone.latestData.l.split(',')[selectedDrone.latestData.l.split(',').length-1])}
-              lng={parseFloat(selectedDrone.latestData.g.split(',')[selectedDrone.latestData.g.split(',').length-1])}
+              lat={parseFloat(selectedDrone?.latestData?.l?.split(',')[selectedDrone?.latestData.l?.split(',').length-1]) ? parseFloat(selectedDrone.latestData.l?.split(',')[selectedDrone?.latestData?.l?.split(',').length-1]) :  0.00}
+              lng={parseFloat(selectedDrone?.latestData?.g?.split(',')[selectedDrone?.latestData.g?.split(',').length-1]) ?  parseFloat(selectedDrone.latestData.g?.split(',')[selectedDrone?.latestData?.g?.split(',').length-1]) : 0.00 }
               zoom={25}
               drone={selectedDrone}
             />

@@ -17,7 +17,7 @@ const TilesComponent = ({ onTileClick }) => {
   const [inactiveDrones, setInactiveDrones] = useState(0);
   const [flyingDrones, setFlyingDrones] = useState(0);
   const [totalAreaCovered, setTotalAreaCovered] = useState('0 sq km'); // State for total area covered
-
+  const [totalFlyingHours, setTotalFlyingHours] = useState('0 Hours');
   const updateData = () => {
     const droneData = getDroneDataFromLocalStorage();
     const total = droneData.length;
@@ -33,25 +33,64 @@ const TilesComponent = ({ onTileClick }) => {
 
   const fetchTotalAreaCovered = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/trip`);
+      const userjson = JSON.parse(localStorage.getItem('user'));
+      console.log(userjson);
+      const user = userjson?.username;
+      const role = userjson?.role;
+      // Conditional URL based on role
+      const url = role === 'user'
+        ? `${process.env.REACT_APP_API_URL}/trip/user/`+user 
+        : `${process.env.REACT_APP_API_URL}/trip`;
+  console.log(url);
+      const response = await fetch(url);
       const data = await response.json();
+      
       console.log(data);
+  
       const totalKmCovered = data.totalKmCovered || 0;
       setTotalAreaCovered(`${totalKmCovered} Acres`);
+      
+    } catch (error) {
+      console.error('Error fetching total area covered:', error);
+    }
+  };
+  
+  const fetchFlyingHours = async () => {
+    try {
+      const userjson = JSON.parse(localStorage.getItem('user'));
+      console.log(userjson);
+      const user = userjson?.username;
+      const role = userjson?.role;
+      // Conditional URL based on role
+      const url = role === 'user'
+        ? `${process.env.REACT_APP_API_URL}/flying-hours/user/`+user 
+        : `${process.env.REACT_APP_API_URL}/flying-hours`;
+  console.log(url);
+      const response = await fetch(url);
+      const data = await response.json();
+      
+      console.log(data);
+  
+      const totalFlyingHours = data.totalFlyingHours || 0;
+      setTotalFlyingHours(`${totalFlyingHours} Hours`);
+      
     } catch (error) {
       console.error('Error fetching total area covered:', error);
     }
   };
 
+
+
   useEffect(() => {
     // Initial data fetch
     updateData();
     fetchTotalAreaCovered(); // Fetch the total area covered from the API
-
+    fetchFlyingHours();
     // Set interval to update data every 10 seconds
     const intervalId = setInterval(() => {
       updateData();
       fetchTotalAreaCovered();
+      fetchFlyingHours();
     }, 10000);
 
     // Cleanup interval on component unmount
@@ -76,7 +115,8 @@ const TilesComponent = ({ onTileClick }) => {
     { title: 'No of Inactive Drones', value: inactiveDrones, icon: <HighlightOffIcon />, color: '#f44336', type: 'inactive' },
     { title: 'No of Drones Flying', value: flyingDrones, icon: <FlightIcon />, color: '#ff9800', type: 'flying' },
     { title: 'Total Area Covered', value: totalAreaCovered, icon: <MapIcon />, color: '#9c27b0' },
-    { title: 'Total Hours', value: '0 hrs', icon: <AccessTimeIcon />, color: '#3f51b5' },
+    { title: 'Total Hours', value: totalFlyingHours
+    , icon: <AccessTimeIcon />, color: '#3f51b5' },
   ];
 
   return (

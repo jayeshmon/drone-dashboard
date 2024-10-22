@@ -20,7 +20,7 @@ const DroneDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalArea, setTotalArea] = useState(null); // State for total area covered
-  const [totalHours, setTotalHours] = useState(null); // State for total hours
+  const [totalHours, setTotalFlyingHours] = useState(null); // State for total hours
 
   const [form, setForm] = useState({
     imei: '',
@@ -80,6 +80,29 @@ const DroneDetails = () => {
         console.error('Error fetching total area covered:', error);
       });
 
+        fetch(`${process.env.REACT_APP_API_URL}/flying-hours/${imei}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch total flying hours');
+        }
+        
+        return response.json();
+      })
+      .then(data => {
+        console.log('Total Flying hours data:', data); // Debug response from total area covered API
+        console.log("************")
+        console.log(data)
+        console.log("************")
+        if (data.kmCovered) {
+          setTotalFlyingHours(data.totalFlyingHours); // Set total flying hours
+        } else {
+          setTotalFlyingHours(0); // Set default value if no flying hours is returned
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching total flying hours:', error);
+      });
+
     // Fetch total hours (if available via another API)
     // fetch(`${process.env.REACT_APP_API_URL}/total-hours/${imei}`)
     //   .then(response => response.json())
@@ -133,12 +156,12 @@ const DroneDetails = () => {
         <div className="card location">
           <LocationOnIcon className="card-icon" />
           <h3>Location</h3>
-          <p>Latitude: {drone.latestData.l.split(',')[drone.latestData.l.split(',').length-1]} Longitude: {drone.latestData.g.split(',')[drone.latestData.g.split(',').length-1]}</p>
+          <p>Latitude: {drone?.latestData?.l?.split(',')[drone?.latestData?.l?.split(',')?.length-1] ? drone?.latestData?.l?.split(',')[drone?.latestData?.l?.split(',')?.length-1] : 0.00} Longitude: {drone?.latestData?.g?.split(',')[drone?.latestData?.g?.split(',')?.length-1] ?drone?.latestData?.g?.split(',')[drone?.latestData?.g?.split(',')?.length-1] : 0.00}</p>
         </div>
         <div className="card trip">
           <RoadIcon className="card-icon" />
           <h3>Total Hours</h3>
-          <p>{totalHours ? `${totalHours} hrs` : 'Loading...'}</p> {/* Display total hours if fetched */}
+          <p>{totalHours ? `${totalHours} hrs` : totalHours}</p> {/* Display total hours if fetched */}
         </div>
         <div className="card total-area">
           <PublicIcon className="card-icon" />

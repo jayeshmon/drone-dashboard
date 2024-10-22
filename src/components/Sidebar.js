@@ -31,7 +31,7 @@ const handleLogout = () => {
           </li>
           <li>
             <Link to="/fleet-management">
-              <i className="fas fa-users-cog"></i>
+              <i className="fas fa-fan"></i>
               <span className="tooltip">Fleet Management</span>
             </Link>
           </li>
