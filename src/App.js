@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { LoadScript } from '@react-google-maps/api';
 import Dashboard from './components/Dashboard';
+import RawData from './components/RawData';
 import DroneDetails from './components/DroneDetails';
 import RealtimeTracking from './components/RealtimeTracking';
 import AdminDashboard from './components/AdminDashboard';
@@ -50,7 +51,8 @@ const App = () => {
             <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} roles={['admin']} />} />
             <Route path="/admin/users" element={<ProtectedRoute element={<UserManagement />} roles={['admin']} />} />
             <Route path="/admin/drones" element={<ProtectedRoute element={<Drones />} roles={['admin']} />} />
-            <Route path="/RealtimeTracking" element={<ProtectedRoute element={<RealtimeTracking />} roles={['admin']} />} />
+            <Route path="/admin/data" element={<ProtectedRoute element={<RawData />} roles={['admin']} />} />
+            <Route path="/RawData" element={<ProtectedRoute element={<RealtimeTracking />} roles={['admin']} />} />
             <Route path="/drone-details/*" element={<DroneDetails />} />
             <Route path="/" element={<Navigate to="/login" />} />
           </Routes>

@@ -33,11 +33,18 @@ const AdminSidebar = () => {
             </Link>
           </li>
           <li>
+            <Link to="/admin/data">
+              <i className="fas fa-database"></i>
+              <span className="admintooltip">Raw Data</span>
+            </Link>
+          </li>
+          <li>
             <Link to="/login">
               <i className="fas fa-sign-out-alt"></i>
               <span className="admintooltip">Logout</span>
             </Link>
           </li>
+          
         </ul>
       </div>
     </div>
