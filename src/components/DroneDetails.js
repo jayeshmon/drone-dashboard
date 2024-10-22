@@ -93,7 +93,7 @@ const DroneDetails = () => {
         console.log("************")
         console.log(data)
         console.log("************")
-        if (data.kmCovered) {
+        if (data.totalFlyingHours) {
           setTotalFlyingHours(data.totalFlyingHours); // Set total flying hours
         } else {
           setTotalFlyingHours(0); // Set default value if no flying hours is returned
