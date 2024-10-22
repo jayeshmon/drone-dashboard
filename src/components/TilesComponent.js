@@ -47,7 +47,7 @@ const TilesComponent = ({ onTileClick }) => {
       
       console.log(data);
   
-      const totalKmCovered = data.totalKmCovered || 0;
+      const totalKmCovered = parseFloat(data.totalKmCovered).toFixed(4) || 0;
       setTotalAreaCovered(`${totalKmCovered} Acres`);
       
     } catch (error) {
