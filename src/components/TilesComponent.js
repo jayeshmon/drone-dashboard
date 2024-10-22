@@ -71,7 +71,7 @@ const TilesComponent = ({ onTileClick }) => {
       
       console.log(data);
   
-      const totalFlyingHours = data.totalFlyingHours || 0;
+      const totalFlyingHours = parseFloat(data.totalFlyingHours).toFixed(4) || 0;
       setTotalFlyingHours(`${totalFlyingHours} Hours`);
       
     } catch (error) {
