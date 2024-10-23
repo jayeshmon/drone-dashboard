@@ -74,7 +74,7 @@ const RawData = () => {
         <Topbar /> {/* Add Topbar (header) */}
         <div className="rawdata-container">
           <div className="rawdata-header">
-            <h2>Fetch Raw Drone Data</h2>
+            <h2>Fetch Raw Data</h2>
             <div className="rawdata-search-bar">
               <input
                 type="text"
@@ -83,9 +83,7 @@ const RawData = () => {
                 onChange={e => setFilter(e.target.value)}
               />
               <FaSearch />
-              <button className="btn btn-primary" onClick={fetchDroneData}>
-                Fetch Data
-              </button>
+             
               <button className="btn btn-secondary" onClick={handleDownload}>
                 Download
               </button>
@@ -112,6 +110,9 @@ const RawData = () => {
               value={endTime}
               onChange={e => setEndTime(e.target.value)}
             />
+             <button className="btn btn-primary" onClick={fetchDroneData}>
+                Fetch Data
+              </button>
           </div>
 
           {loading && <p>Loading...</p>}
