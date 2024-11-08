@@ -75,7 +75,7 @@ const AddDronePopup = ({ onClose, onSave }) => {
             <input type="text" value={model} onChange={(e) => setModel(e.target.value)} required />
           </label>
           <label>
-            Range on 100% SOC (km):
+            Range on 100% SOC (minutes):
             <input type="number" value={range} onChange={(e) => setRange(e.target.value)} required />
           </label>
           <label>

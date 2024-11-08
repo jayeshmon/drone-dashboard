@@ -169,7 +169,7 @@ const Drones = () => {
                 <th>Drone Name</th>
                 <th>Model / ID</th>
                 <th>SOC % (Charge)</th>
-                <th>Range (km)</th>
+                <th>Range (minutes)</th>
                 <th>Status</th>
                 
                 {user && user.role === 'admin' ? <th>Assigned User</th> : null}

@@ -91,7 +91,7 @@ const DroneCard = () => {
                 </div>
                 <div className="battery-info">
                   <p className="battery-percentage">{drone.latestData?.MV || 0}%</p>
-                  <p className="battery-max">Max: {drone.maxKm} miles</p>
+                 
                 </div>
               </div>
             </div>
